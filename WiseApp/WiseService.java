@@ -15,5 +15,7 @@ public class WiseService {
         content = sc.nextLine();
         System.out.print("작가 : ");
         author = sc.nextLine();
+
+        WiseRepository.add(new Wise(content, author));
     }
 }
