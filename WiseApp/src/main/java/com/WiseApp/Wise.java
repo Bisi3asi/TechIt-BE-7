@@ -1,4 +1,4 @@
-package WiseApp;
+package com.WiseApp;
 
 /**
  * 명언 객체를 생성하는 클래스
@@ -32,6 +32,7 @@ public class Wise {
         this.content = content;
         this.author = author;
         this.id = id;
+        if (nextId <= id) nextId = id + 1;
     }
 
     int getId() {

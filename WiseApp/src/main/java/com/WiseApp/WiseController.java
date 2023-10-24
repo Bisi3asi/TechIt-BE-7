@@ -1,4 +1,4 @@
-package WiseApp;
+package com.WiseApp;
 
 import java.util.Scanner;
 
@@ -12,6 +12,9 @@ public class WiseController {
      * 명언 앱 실행 후 종료 명령 전까지 CRUD 호출(WiseService)
      */
     void launch() {
+        if (wiseService.readWise())
+            System.out.println("\n프로그램 다시 시작...\n");
+        System.out.println(" == 명언 앱 ==");
         boolean quit = false;
         String input = "";
         Scanner sc = new Scanner(System.in);
@@ -55,11 +58,11 @@ public class WiseController {
                 author = sc.nextLine();
                 wiseService.modifyWise(id, content, author);
             }
-
             if (input.equals("목록")) {
                 wiseService.getWiseList();
             }
             if (input.equals("종료")) {
+                wiseService.saveWise();
                 quit = true;
                 sc.close();
             }

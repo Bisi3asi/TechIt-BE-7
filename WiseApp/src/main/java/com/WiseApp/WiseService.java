@@ -1,15 +1,20 @@
-package WiseApp;
+package com.WiseApp;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 /**
  * Wise에 대한 CRUD 기능을 수행하는 클래스
  */
 public class WiseService {
     WiseRepository wiseRepository = new WiseRepository();
+    final String PATH = ("data.txt");
 
     public void postWise(String content, String author) {
-        wiseRepository.add(new Wise(content, author));
+        int id = wiseRepository.add(new Wise(content, author));
+        System.out.println(id + "번 명언이 등록되었습니다.");
     }
 
     public String getWiseAuthor(int id) {
@@ -70,6 +75,56 @@ public class WiseService {
         if (searchResult != -1) {
             wiseRepository.wiseList.add(searchResult, new Wise(content, author, searchResult + 1));
             wiseRepository.wiseList.remove(searchResult + 1);
+        }
+    }
+
+    /**
+     * 빌드. 종료 시 프로젝트 경로에 data.txt로 저장하는 메소드
+     */
+    public boolean saveWise() {
+        try {
+            // 덮어쓰기
+            FileWriter fw = new FileWriter(PATH, false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (Wise wise : wiseRepository.findAll()) {
+                bw.write(String.valueOf(wise.getId()));
+                bw.newLine();
+                bw.write(wise.getAuthor());
+                bw.newLine();
+                bw.write(wise.getContent());
+                bw.newLine();
+            }
+            bw.flush();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    /**
+     * 앱 실행 시 프로젝트 경로의 data.txt를 불러오는 메소드
+     *
+     * @return the boolean
+     */
+    public boolean readWise() {
+        try {
+            FileReader fr = new FileReader(PATH);
+            BufferedReader br = new BufferedReader(fr);
+
+            String readLine = "";
+            while((readLine = br.readLine()) != null) {
+                int id = Integer.valueOf(readLine);
+                readLine = br.readLine();
+                String author = readLine;
+                readLine = br.readLine();
+                String content = readLine;
+                wiseRepository.add(new Wise(content, author, id));
+            }
+            return true;
+        } catch (Exception e) {
+            // System.out.println(e);
+            return false;
         }
     }
 }

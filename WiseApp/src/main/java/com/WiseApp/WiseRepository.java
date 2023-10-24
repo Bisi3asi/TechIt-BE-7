@@ -1,4 +1,4 @@
-package WiseApp;
+package com.WiseApp;
 
 import java.util.ArrayList;
 
@@ -13,9 +13,9 @@ public class WiseRepository {
      *
      * @param wise  (명언내용, 작가, ID(증가))
      */
-    public void add(Wise wise) {
+    public int add(Wise wise) {
         wiseList.add(wise);
-        System.out.println(wise.getId() + "번 명언이 등록되었습니다.");
+        return wise.getId();
     }
 
     /**
