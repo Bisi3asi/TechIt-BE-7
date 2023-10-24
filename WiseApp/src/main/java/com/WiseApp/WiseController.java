@@ -58,6 +58,10 @@ public class WiseController {
                 author = sc.nextLine();
                 wiseService.modifyWise(id, content, author);
             }
+            if (input.equals("빌드")) {
+                if (wiseService.saveWise())
+                    System.out.println(wiseService.PATH+" 파일의 내용이 갱신되었습니다.");
+            }
             if (input.equals("목록")) {
                 wiseService.getWiseList();
             }

@@ -10,7 +10,7 @@ import java.io.FileWriter;
  */
 public class WiseService {
     WiseRepository wiseRepository = new WiseRepository();
-    final String PATH = ("data.txt");
+    final String PATH = ("data.json"); // 파일 저장, 불러오기 경로
 
     public void postWise(String content, String author) {
         int id = wiseRepository.add(new Wise(content, author));
@@ -79,7 +79,7 @@ public class WiseService {
     }
 
     /**
-     * 빌드. 종료 시 프로젝트 경로에 data.txt로 저장하는 메소드
+     * 빌드. 종료 시 프로젝트 경로에 data.json으로 저장하는 메소드
      */
     public boolean saveWise() {
         try {
@@ -103,7 +103,7 @@ public class WiseService {
     }
 
     /**
-     * 앱 실행 시 프로젝트 경로의 data.txt를 불러오는 메소드
+     * 앱 실행 시 프로젝트 경로의 data.json을 불러오는 메소드
      *
      * @return the boolean
      */
