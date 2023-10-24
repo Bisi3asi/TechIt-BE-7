@@ -22,6 +22,9 @@ public class WiseController {
             if (input.equals("등록")){
                 wiseService.postWise();
             }
+            if (input.equals("목록")){
+                wiseService.getWiseList();
+            }
             if (input.equals("종료")){
                 quit = true;
                 sc.close();

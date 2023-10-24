@@ -6,15 +6,25 @@ package WiseApp;
 public class Wise {
     private final String content; // 명언 내용
     private final String author; // 명언 작가
-    private static int id = 0; // 고유 명언번호 생성당 1씩 증가 위해 static 선언
+    private final int id; // 생성 id
+    private static int nextId = 1; // 다음 생성될 객체의 id를 지정하는 static 변수
 
     Wise(String content, String author){
         this.content = content;
         this.author = author;
-        id++;
+        id = nextId;
+        nextId++;
     }
 
-    static int getId(){
-        return Wise.id;
+    int getId(){
+        return id;
+    }
+
+    String getContent(){
+        return content;
+    }
+
+    String getAuthor(){
+        return author;
     }
 }
