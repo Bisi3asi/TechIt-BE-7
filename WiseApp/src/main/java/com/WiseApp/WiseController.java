@@ -34,12 +34,8 @@ public class WiseController {
 
                 wiseService.postWise(content, author);
             }
-            if (input.equals("삭제")) {
-                int id;
-
-                System.out.print("삭제? id = ");
-                id = sc.nextInt();
-                sc.nextLine(); // 개행 소비
+            if (input.matches("삭제\\?id=\\d")) {
+                int id = Integer.valueOf(input.substring(6));
                 wiseService.deleteWise(id);
             }
             if (input.equals("수정")) {
