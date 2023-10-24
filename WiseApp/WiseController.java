@@ -16,16 +16,50 @@ public class WiseController {
         String input = "";
         Scanner sc = new Scanner(System.in);
         while (!quit) {
+            // 종료 입력 시 loop break
             System.out.print("명령) ");
             input = sc.nextLine();
-            // 종료 입력 시 loop break
-            if (input.equals("등록")){
-                wiseService.postWise();
+
+            if (input.equals("등록")) {
+                String content;
+                String author;
+
+                System.out.print("명언 : ");
+                content = sc.nextLine();
+                System.out.print("작가 : ");
+                author = sc.nextLine();
+
+                wiseService.postWise(content, author);
             }
-            if (input.equals("목록")){
+            if (input.equals("삭제")) {
+                int id;
+
+                System.out.print("삭제? id = ");
+                id = sc.nextInt();
+                sc.nextLine(); // 개행 소비
+                wiseService.deleteWise(id);
+            }
+            if (input.equals("수정")) {
+                int id;
+                String content;
+                String author;
+                System.out.print("수정? id = ");
+                id = sc.nextInt();
+                sc.nextLine(); // 개행 소비
+                // 기존 명언 출력
+                System.out.println("명언(기존) : " + wiseService.getWiseContent(id));
+                System.out.print("명언 : ");
+                content = sc.nextLine();
+                System.out.println("명언(기존) : " + wiseService.getWiseAuthor(id));
+                System.out.print("작가 : ");
+                author = sc.nextLine();
+                wiseService.modifyWise(id, content, author);
+            }
+
+            if (input.equals("목록")) {
                 wiseService.getWiseList();
             }
-            if (input.equals("종료")){
+            if (input.equals("종료")) {
                 quit = true;
                 sc.close();
             }

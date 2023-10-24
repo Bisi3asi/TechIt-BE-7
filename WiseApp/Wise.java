@@ -9,22 +9,40 @@ public class Wise {
     private final int id; // 생성 id
     private static int nextId = 1; // 다음 생성될 객체의 id를 지정하는 static 변수
 
-    Wise(String content, String author){
+    /**
+     * 신규 생성자(등록)
+     * @param content the content
+     * @param author  the author
+     */
+    Wise(String content, String author) {
         this.content = content;
         this.author = author;
         id = nextId;
         nextId++;
     }
 
-    int getId(){
+    /**
+     * 수정 생성자(수정)
+     *
+     * @param content the content
+     * @param author  the author
+     * @param id      the id
+     */
+    Wise(String content, String author, int id) {
+        this.content = content;
+        this.author = author;
+        this.id = id;
+    }
+
+    int getId() {
         return id;
     }
 
-    String getContent(){
+    String getContent() {
         return content;
     }
 
-    String getAuthor(){
+    String getAuthor() {
         return author;
     }
 }
