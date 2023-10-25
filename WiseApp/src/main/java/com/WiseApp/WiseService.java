@@ -1,7 +1,9 @@
 package com.WiseApp;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -80,21 +82,23 @@ public class WiseService {
 
     /**
      * 빌드. 종료 시 프로젝트 경로에 data.json으로 저장하는 메소드
+     *
+     * @return the boolean
      */
     public boolean saveWise() {
         try {
-            // 덮어쓰기
-            FileWriter fw = new FileWriter(PATH, false);
-            BufferedWriter bw = new BufferedWriter(fw);
+            JSONArray wiseInfoArray = new JSONArray();
             for (Wise wise : wiseRepository.findAll()) {
-                bw.write(String.valueOf(wise.getId()));
-                bw.newLine();
-                bw.write(wise.getAuthor());
-                bw.newLine();
-                bw.write(wise.getContent());
-                bw.newLine();
+                JSONObject wiseInfo = new JSONObject();
+                wiseInfo.put("id", String.valueOf(wise.getId()));
+                wiseInfo.put("content", wise.getContent());
+                wiseInfo.put("author", wise.getAuthor());
+                wiseInfoArray.add(wiseInfo);
             }
-            bw.flush();
+            FileWriter fw = new FileWriter(PATH);
+            fw.write(wiseInfoArray.toJSONString());
+            fw.flush();
+            fw.close();
             return true;
         } catch (Exception e) {
             System.out.println(e);
@@ -109,17 +113,17 @@ public class WiseService {
      */
     public boolean readWise() {
         try {
-            FileReader fr = new FileReader(PATH);
-            BufferedReader br = new BufferedReader(fr);
-
-            String readLine = "";
-            while((readLine = br.readLine()) != null) {
-                int id = Integer.valueOf(readLine);
-                readLine = br.readLine();
-                String author = readLine;
-                readLine = br.readLine();
-                String content = readLine;
-                wiseRepository.add(new Wise(content, author, id));
+            JSONParser jsonParser = new JSONParser();
+            Object object = jsonParser.parse(new FileReader(PATH));
+            JSONArray jsonArray = (JSONArray) object;
+            if (!jsonArray.isEmpty()) {
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    int id = Integer.valueOf((String) jsonObject.get("id"));
+                    String author = (String) jsonObject.get("author");
+                    String content = (String) jsonObject.get("content");
+                    wiseRepository.add(new Wise(content, author, id));
+                }
             }
             return true;
         } catch (Exception e) {
