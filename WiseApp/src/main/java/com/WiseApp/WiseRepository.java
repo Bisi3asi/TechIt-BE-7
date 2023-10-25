@@ -11,7 +11,7 @@ public class WiseRepository {
     /**
      * 리스트에 생성된 명언 객체를 저장하고, 증가되는 명언번호를 출력하는 메소드
      *
-     * @param wise  (명언내용, 작가, ID(증가))
+     * @param wise (명언내용, 작가, ID(증가))
      */
     public int add(Wise wise) {
         wiseList.add(wise);
@@ -35,6 +35,4 @@ public class WiseRepository {
     public ArrayList<Wise> findAll() {
         return wiseList;
     }
-
-
 }
