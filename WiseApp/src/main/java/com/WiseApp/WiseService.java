@@ -9,6 +9,7 @@ import java.io.FileWriter;
 
 /**
  * Wise에 대한 CRUD 기능을 수행하는 클래스
+ * @todo refactor
  */
 public class WiseService {
     WiseRepository wiseRepository = new WiseRepository();
@@ -17,6 +18,14 @@ public class WiseService {
     public void postWise(String content, String author) {
         int id = wiseRepository.add(new Wise(content, author));
         System.out.println(id + "번 명언이 등록되었습니다.");
+    }
+
+    public boolean findById(int id){
+        if (wiseRepository.findByID(id) == -1) {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+            return false;
+        }
+        else return true;
     }
 
     public String getWiseAuthor(int id) {
@@ -29,8 +38,6 @@ public class WiseService {
 
     /**
      * 입력값 "목록"에 따른 모든 명언 리스트 출력
-     *
-     * @todo 리팩토링
      */
     public void getWiseList() {
         System.out.println("번호 / 작가 / 명언");
