@@ -11,6 +11,7 @@ public class Wise {
 
     /**
      * 신규 생성자(등록)
+     *
      * @param content the content
      * @param author  the author
      */

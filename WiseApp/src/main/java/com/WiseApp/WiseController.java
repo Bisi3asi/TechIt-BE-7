@@ -7,25 +7,23 @@ import java.util.Scanner;
  */
 public class WiseController {
     WiseService wiseService = new WiseService();
+    Scanner sc = new Scanner(System.in);
 
     /**
      * 명언 앱 실행 후 종료 명령 전까지 CRUD 호출(WiseService)
-     * @todo 메소드별로 다시 split
-     * @RQ 작성
      */
     void launch() {
-        if (wiseService.readWise())
+        if (wiseService.readWise() == true)
             System.out.println("\n프로그램 다시 시작...\n");
         System.out.println(" == 명언 앱 ==");
-        boolean quit = false;
-        String input = "";
-        Scanner sc = new Scanner(System.in);
-        while (!quit) {
-            // 종료 입력 시 loop break
-            System.out.print("명령) ");
-            input = sc.nextLine();
 
-            if (input.equals("등록")) {
+        boolean quit = false;
+        while (!quit) {
+            String cmd = "";
+            System.out.print("명령) ");
+            cmd = sc.nextLine();
+
+            if (cmd.equals("등록")) {
                 String content;
                 String author;
 
@@ -33,7 +31,6 @@ public class WiseController {
                 content = sc.nextLine();
                 System.out.print("작가 : ");
                 author = sc.nextLine();
-
                 wiseService.postWise(content, author);
             }
 
@@ -42,68 +39,46 @@ public class WiseController {
             // ex) 삭제?author=A&id=2
             // ex) 삭제?id=2&author=B
             // ex) 삭제?archive=true&id=2&author=C
-            if (input.startsWith("삭제")) {
-                int id = -1;
-                String[] inputBits = input.split("\\?", 2);
-                String action = inputBits[0]; // 삭제?
-                String queryString = inputBits[1]; // 삭제?를 제외한 나머지 str
 
-                String[] queryStringBits = queryString.split("&"); // ex) id=2, author="a"
-                for (int i = 0; i < queryStringBits.length; i++){
-                    String queryParamStr = queryStringBits[i]; // ex) id = 2
-                    String[] queryParamStrBits = queryParamStr.split("=", 2); // ex) id, 2
-
-                    String paramName = queryParamStrBits[0];
-                    String paramValue = queryParamStrBits[1];
-                    if(paramName.equals("id")) id = Integer.valueOf(paramValue);
-                }
+            if (cmd.startsWith("삭제?")) {
+                Rq rq = new Rq(cmd);
+                int id = _getParamValueAsInt(rq, "id", -1);
                 wiseService.deleteWise(id);
-
             }
             // 수정(웹 방식의 입력을 고려한 문자열 파싱 방법 적용)
-            if (input.startsWith("수정")) {
-                int id = -1;
-                String[] inputBits = input.split("\\?", 2);
-                String action = inputBits[0]; // 삭제?
-                String queryString = inputBits[1]; // 삭제?를 제외한 나머지 str
-
-                String[] queryStringBits = queryString.split("&"); // ex) id=2, author="a"
-                for (int i = 0; i < queryStringBits.length; i++){
-                    String queryParamStr = queryStringBits[i]; // ex) id = 2
-                    String[] queryParamStrBits = queryParamStr.split("=", 2); // ex) id, 2
-
-                    String paramName = queryParamStrBits[0];
-                    String paramValue = queryParamStrBits[1];
-                    if(paramName.equals("id")) id = (Integer.valueOf(paramValue));
+            if (cmd.startsWith("수정?")) {
+                Rq rq = new Rq(cmd);
+                int id = _getParamValueAsInt(rq, "id", -1);
+                if (wiseService.findById(id) == true) {
+                    System.out.println("명언(기존) : " + wiseService.getWiseContent(id));
+                    System.out.print("명언 : ");
+                    String content = sc.nextLine();
+                    System.out.println("명언(기존) : " + wiseService.getWiseAuthor(id));
+                    System.out.print("작가 : ");
+                    String author = sc.nextLine();
+                    wiseService.modifyWise(id, content, author);
                 }
-                String content, author = "";
-                System.out.println("명언(기존) : " + wiseService.getWiseContent(id));
-                System.out.print("명언 : ");
-                content = sc.nextLine();
-                System.out.println("명언(기존) : " + wiseService.getWiseAuthor(id));
-                System.out.print("작가 : ");
-                author = sc.nextLine();
-                wiseService.modifyWise(id, content, author);
             }
 
-            if (input.equals("목록")) {
+            if (cmd.equals("목록")) {
                 wiseService.getWiseList();
             }
 
-            if (input.equals("빌드")) {
-                if (wiseService.saveWise())
+            if (cmd.equals("빌드")) {
+                if (wiseService.saveWise() == true)
                     System.out.println(wiseService.PATH + " 파일의 내용이 갱신되었습니다.");
             }
 
-            if (input.equals("종료")) {
+            if (cmd.equals("종료")) {
                 wiseService.saveWise();
                 quit = true;
                 sc.close();
             }
         }
     }
-    int getParmamAsInt(){
-        return 0;
+
+    public int _getParamValueAsInt(Rq rq, String paramName, int defaultValue) {
+        return rq.getParamValueAsInt(paramName, defaultValue);
     }
 }
 
