@@ -10,6 +10,7 @@ public class WiseController {
 
     /**
      * 명언 앱 실행 후 종료 명령 전까지 CRUD 호출(WiseService)
+     * @todo 메소드별로 다시 split
      */
     void launch() {
         if (wiseService.readWise())
@@ -34,10 +35,29 @@ public class WiseController {
 
                 wiseService.postWise(content, author);
             }
-            if (input.matches("삭제\\?id=\\d")) {
-                int id = Integer.valueOf(input.substring(6));
-                wiseService.deleteWise(id);
+
+            // 웹 방식의 검색을 고려한 문자열 파싱 방법(모든 예제의 값이 유효하게 작동)
+            // ex) 삭제?author=A&id=2
+            // ex) 삭제?id=2&author=B
+            // ex) 삭제?archive=true&id=2&author=C\
+            if (input.startsWith("삭제?")) {
+                String[] inputBits = input.split("\\?", 2);
+                String action = inputBits[0]; // 삭제?
+                String queryString = inputBits[1];
+
+                String[] queryStringBits = queryString.split("&");
+                for (int i = 0; i < queryStringBits.length; i++){
+                    String queryParamStr = queryStringBits[i];
+                    String[] queryParamStrBits = queryParamStr.split("=", 2);
+
+                    String paramName = queryParamStrBits[0];
+                    String paramValue = queryParamStrBits[1];
+                    if(paramName.equals("id")) {
+                        wiseService.deleteWise(Integer.valueOf(paramValue));
+                    }
+                }
             }
+
             if (input.equals("수정")) {
                 int id;
                 String content;
@@ -54,13 +74,16 @@ public class WiseController {
                 author = sc.nextLine();
                 wiseService.modifyWise(id, content, author);
             }
-            if (input.equals("빌드")) {
-                if (wiseService.saveWise())
-                    System.out.println(wiseService.PATH+" 파일의 내용이 갱신되었습니다.");
-            }
+
             if (input.equals("목록")) {
                 wiseService.getWiseList();
             }
+
+            if (input.equals("빌드")) {
+                if (wiseService.saveWise())
+                    System.out.println(wiseService.PATH + " 파일의 내용이 갱신되었습니다.");
+            }
+
             if (input.equals("종료")) {
                 wiseService.saveWise();
                 quit = true;
