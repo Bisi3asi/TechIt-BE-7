@@ -1,12 +1,13 @@
-package com.WiseApp;
+package com.ll.domain;
 
+import com.ll.standard.util.*;
 import java.util.HashMap;
 
 public class Rq {
-    String cmd;
-    String action;
-    String queryString;
-    HashMap<String, String> paramMap = new HashMap<>();
+    public String cmd;
+    public String action;
+    public String queryString;
+    public HashMap<String, String> paramMap = new HashMap<>();
 
     Rq (String cmd) {
         this.cmd = cmd;
@@ -37,14 +38,7 @@ public class Rq {
     String getAction() {
         return action;
     }
-
-
     public int getParamValueAsInt(String paramName, int defaultValue) {
-        String paramValue = paramMap.get(paramName);
-        try {
-            return Integer.parseInt(paramValue);
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
+        return Ut.str.parseInt(paramMap.get(paramName), defaultValue);
     }
 }
