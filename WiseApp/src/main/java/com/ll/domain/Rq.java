@@ -1,10 +1,13 @@
 package com.ll.domain;
 
 import com.ll.standard.util.*;
+import lombok.Getter;
+
 import java.util.HashMap;
 
 public class Rq {
     public String cmd;
+    @Getter
     public String action;
     public String queryString;
     public HashMap<String, String> paramMap = new HashMap<>();
@@ -35,9 +38,6 @@ public class Rq {
         }
     }
 
-    String getAction() {
-        return action;
-    }
     public int getParamValueAsInt(String paramName, int defaultValue) {
         return Ut.str.parseInt(paramMap.get(paramName), defaultValue);
     }

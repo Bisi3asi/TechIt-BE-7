@@ -1,12 +1,20 @@
-package com.WiseApp;
+package com.ll.domain;
+
+import lombok.Getter;
 
 /**
  * 명언 객체를 생성하는 클래스
+ * Getter, Setter에 대한 이해
+ *
  */
 public class Wise {
+    @Getter
     private final String content; // 명언 내용
+    @Getter
     private final String author; // 명언 작가
+    @Getter
     private final int id; // 생성 id
+    @Getter
     private static int nextId = 1; // 다음 생성될 객체의 id를 지정하는 static 변수
 
     /**
@@ -34,17 +42,5 @@ public class Wise {
         this.author = author;
         this.id = id;
         if (nextId <= id) nextId = id + 1;
-    }
-
-    int getId() {
-        return id;
-    }
-
-    String getContent() {
-        return content;
-    }
-
-    String getAuthor() {
-        return author;
     }
 }

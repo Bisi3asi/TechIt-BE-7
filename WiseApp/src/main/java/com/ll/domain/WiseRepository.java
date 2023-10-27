@@ -1,4 +1,4 @@
-package com.WiseApp;
+package com.ll.domain;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * 명언 객체를 저장하는 클래스
  */
 public class WiseRepository {
-    ArrayList<Wise> wiseList = new ArrayList<>(); // 명언 객체를 저장하는 리스트
+    public final ArrayList<Wise> wiseList = new ArrayList<>(); // 명언 객체를 저장하는 리스트
 
     /**
      * 리스트에 생성된 명언 객체를 저장하고, 증가되는 명언번호를 출력하는 메소드
@@ -19,8 +19,7 @@ public class WiseRepository {
     }
 
     /**
-     * @param id       검색할 id
-     * @param wiseList 명언 저장된 리스트
+     * @param id 검색할 id
      * @return 검색한 id의 wiseList 상 index 리턴
      */
     public int findByID(int id) {

@@ -1,4 +1,6 @@
-package com.WiseApp;
+package com.ll;
+
+import com.ll.domain.WiseController;
 
 /**
  * Main

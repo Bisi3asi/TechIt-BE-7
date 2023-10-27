@@ -1,4 +1,4 @@
-package com.WiseApp;
+package com.ll.domain;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,7 +12,7 @@ import java.io.FileWriter;
  * @todo refactor
  */
 public class WiseService {
-    WiseRepository wiseRepository = new WiseRepository();
+    public final WiseRepository wiseRepository = new WiseRepository();
     final String PATH = ("data.json"); // 파일 저장, 불러오기 경로
 
     public void postWise(String content, String author) {
@@ -39,7 +39,7 @@ public class WiseService {
     /**
      * 입력값 "목록"에 따른 모든 명언 리스트 출력
      */
-    public void getWiseList() {
+    public void printWiseList() {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("----------------------");
         for (int i = wiseRepository.findAll().size() - 1; i >= 0; i--) {
@@ -90,9 +90,8 @@ public class WiseService {
     /**
      * 빌드. 종료 시 프로젝트 경로에 data.json으로 저장하는 메소드
      *
-     * @return the boolean
      */
-    public boolean saveWise() {
+    public void saveWise() {
         try {
             JSONArray wiseInfoArray = new JSONArray();
             for (Wise wise : wiseRepository.findAll()) {
@@ -106,10 +105,9 @@ public class WiseService {
             fw.write(wiseInfoArray.toJSONString());
             fw.flush();
             fw.close();
-            return true;
+            System.out.println(PATH + " 파일의 내용이 갱신되었습니다.");
         } catch (Exception e) {
-            System.out.println(e);
-            return false;
+            System.out.println("파일 저장 실패");
         }
     }
 

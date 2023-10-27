@@ -1,4 +1,4 @@
-package com.WiseApp;
+package com.ll.domain;
 
 import java.util.Scanner;
 
@@ -6,14 +6,14 @@ import java.util.Scanner;
  * 사용자 입력에 따른 처리를 실행하는 클래스
  */
 public class WiseController {
-    WiseService wiseService = new WiseService();
-    Scanner sc = new Scanner(System.in);
+    public final WiseService wiseService = new WiseService();
+    private final Scanner sc = new Scanner(System.in);
 
     /**
      * 명언 앱 실행 후 종료 명령 전까지 CRUD 호출(WiseService)
      */
-    void launch() {
-        if (wiseService.readWise() == true)
+    public void launch() {
+        if (wiseService.readWise())
             System.out.println("\n프로그램 다시 시작...\n");
         System.out.println(" == 명언 앱 ==");
 
@@ -49,7 +49,7 @@ public class WiseController {
             if (cmd.startsWith("수정?")) {
                 Rq rq = new Rq(cmd);
                 int id = _getParamValueAsInt(rq, "id", -1);
-                if (wiseService.findById(id) == true) {
+                if (wiseService.findById(id)) {
                     System.out.println("명언(기존) : " + wiseService.getWiseContent(id));
                     System.out.print("명언 : ");
                     String content = sc.nextLine();
@@ -61,12 +61,11 @@ public class WiseController {
             }
 
             if (cmd.equals("목록")) {
-                wiseService.getWiseList();
+                wiseService.printWiseList();
             }
 
             if (cmd.equals("빌드")) {
-                if (wiseService.saveWise() == true)
-                    System.out.println(wiseService.PATH + " 파일의 내용이 갱신되었습니다.");
+                wiseService.saveWise();
             }
 
             if (cmd.equals("종료")) {
