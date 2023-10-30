@@ -38,10 +38,6 @@ public class WiseController {
             }
 
             // 삭제(웹 방식의 입력을 고려한 문자열 파싱 방법 적용)
-            // (이하 예제의 값이 유효하게 작동)
-            // ex) 삭제?author=A&id=2
-            // ex) 삭제?id=2&author=B
-            // ex) 삭제?archive=true&id=2&author=C
 
             if (cmd.startsWith("삭제?")) {
                 Rq rq = new Rq(cmd);
