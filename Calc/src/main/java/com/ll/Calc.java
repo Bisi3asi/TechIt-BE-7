@@ -31,7 +31,7 @@ class Calc {
             endIndex = sb.indexOf(")", index + 1);
             prior = sb.substring(startIndex, endIndex);
         }
-        String[] arr = prior.split("\\s+"); r
+        String[] arr = prior.split("\\s+");
 
         for (int i = 0; i < arr.length; i++) {
             if (arr[i].matches("\\*")) {
