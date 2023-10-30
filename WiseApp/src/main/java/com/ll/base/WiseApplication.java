@@ -1,4 +1,4 @@
-package com.ll;
+package com.ll.base;
 
 import com.ll.domain.WiseController;
 

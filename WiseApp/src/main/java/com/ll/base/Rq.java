@@ -1,4 +1,4 @@
-package com.ll.domain;
+package com.ll.base;
 
 import com.ll.standard.util.*;
 import lombok.Getter;
@@ -12,7 +12,7 @@ public class Rq {
     public String queryString;
     public HashMap<String, String> paramMap = new HashMap<>();
 
-    Rq (String cmd) {
+    public Rq(String cmd) {
         this.cmd = cmd;
 
         String[] cmdBits = cmd.split("\\?", 2);

@@ -1,5 +1,7 @@
 package com.ll.domain;
 
+import com.ll.base.Rq;
+
 import java.util.Scanner;
 
 /**
@@ -11,6 +13,7 @@ public class WiseController {
 
     /**
      * 명언 앱 실행 후 종료 명령 전까지 CRUD 호출(WiseService)
+     * todo 메소드 리팩토링
      */
     public void launch() {
         if (wiseService.readWise())
