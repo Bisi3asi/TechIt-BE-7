@@ -158,6 +158,15 @@ public class HomeController {
         model.addAttribute("v2", "World");
         return "home";
     }
+
+    // homecontroller 객체(bean)은 사용자 요청과 사용자 수에 상관 없이 1개만 사용되어 적용된다.
+    int num = 0;
+    @GetMapping("/calc16")
+    @ResponseBody
+    int showCalc16() {
+        num ++;
+        return num;
+    }
 }
 
 @AllArgsConstructor
