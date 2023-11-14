@@ -106,7 +106,7 @@ public class HomeController {
     @GetMapping("/calc10")
     @ResponseBody
     List<Person> showCalc10(String name, int age) {
-        return new ArrayList<>(){{
+        return new ArrayList<>() {{
             add(new Person(name, age));
             add(new Person("Tom", 42));
             add(new Person("Ginger", 12));
@@ -120,15 +120,32 @@ public class HomeController {
         return new int[]{10, 50, 40};
     }
 
+    // html 형식으로 입력 시 해당 내용을 완성해서 출력한다
+    // ctrl + u로 소스 확인 가능
     @GetMapping("/calc12")
     @ResponseBody
-    int[] showCalc12() {
-        return new int[]{10, 50, 40};
+    String showCalc12() {
+        return """
+                <div>
+                <input type="text" name="username" placeholder="이름을 입력하세요.">
+                </div>                
+                """;
+    }
+
+    @GetMapping("/calc13")
+    @ResponseBody
+    String showCalc13(String content) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<div>");
+        sb.append("<input type=\"text\" name=\"username\" placeholder=\"이름을 입력하세요.\" value =\"%s\"");
+        sb.append("</div>");
+        return sb.toString().formatted(content);
     }
 }
 
 @AllArgsConstructor
-class Person{
+class Person {
     @Getter
     private String name;
     @Getter
