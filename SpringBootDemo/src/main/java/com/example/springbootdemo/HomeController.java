@@ -3,6 +3,7 @@ package com.example.springbootdemo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -141,6 +142,21 @@ public class HomeController {
         sb.append("<input type=\"text\" name=\"username\" placeholder=\"이름을 입력하세요.\" value =\"%s\"");
         sb.append("</div>");
         return sb.toString().formatted(content);
+    }
+
+    // responsebody가 없으면 templates에 있는 해당 리턴값 명의 html을 호출한다.
+    @GetMapping("/calc14")
+    String showCalc14() {
+        return "home";
+    }
+
+    // 뷰에 담을 데이터는 model 객체를 통해 전송한다.
+    @GetMapping("/calc15")
+    String showCalc15(Model model) {
+        // addAttribute를 통해 attributeName과 value를 매핑해 view로 전송한다.
+        model.addAttribute("v1", "Hello");
+        model.addAttribute("v2", "World");
+        return "home";
     }
 }
 
