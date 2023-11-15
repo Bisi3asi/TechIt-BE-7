@@ -1,9 +1,16 @@
 package com.ll;
-import java.io.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class TestUtil {
-    // gen == generate 생성하다.
+    // input output redirect
     public static Scanner genScanner(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
 
