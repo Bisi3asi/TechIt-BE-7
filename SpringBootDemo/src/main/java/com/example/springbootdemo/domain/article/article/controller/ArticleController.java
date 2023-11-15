@@ -1,20 +1,20 @@
-package com.example.springbootdemo;
+package com.example.springbootdemo.domain.article.article.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.example.springbootdemo.domain.article.article.entity.Article;
+import com.example.springbootdemo.domain.article.article.service.ArticleService;
+import com.example.springbootdemo.global.rsData.RsData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/article")
 public class ArticleController {
-    private List<Article> articles = new ArrayList<>();
+    private final ArticleService articleService = new ArticleService();
 
     @GetMapping("/write")
     String showWrite() {
@@ -24,9 +24,7 @@ public class ArticleController {
     @PostMapping("/write")
     @ResponseBody
     RsData<Article> doWrite(String title, String body) {
-        Article article = new Article(articles.size() + 1, title, body);
-        articles.add(article);
-
+        Article article = articleService.write(title, body);
         RsData<Article> rs = new RsData(
                 "S-1",
                 "%d번 게시물이 작성되었습니다.".formatted(article.getId()),
@@ -39,29 +37,13 @@ public class ArticleController {
     @GetMapping("/getLastArticle")
     @ResponseBody
     Article getLastArticle() {
-        // getLast는 java 21 버전에서만 지원
-        return articles.getLast();
+        return articleService.findLastArticle();
     }
 
     @GetMapping("/getArticles")
     @ResponseBody
     List<Article> getArticles() {
-        return articles;
+        return articleService.findAll();
     }
 }
 
-@Getter
-@AllArgsConstructor
-class RsData<T> {
-    private String resultCode;
-    private String message;
-    private T data;
-}
-
-@Getter
-@AllArgsConstructor
-class Article {
-    private long id;
-    private String title;
-    private String body;
-}

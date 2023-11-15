@@ -1,4 +1,4 @@
-package com.example.springbootdemo;
+package com.example.springbootdemo.home.home.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
