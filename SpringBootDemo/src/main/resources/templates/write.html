@@ -5,36 +5,41 @@
     <title>Title</title>
 </head>
 <body>
-<form style="display : flex; flex-direction: column; gap: 20px; max-width:500px;">
-    <input type="text" id="input-title" placeholder="제목">
-    <input type="text" id="input-body" placeholder="내용">
-    <!-- javascript:; 아무것도 하지 않겠다는 뜻 -->
-    <a href="javascript:;" onclick="submitWriteForm()">글쓰기</a>
+<!-- div와 form의 차이 : div는 엔터를 인식 안하고, form은 인식 한다 -->
+<form onsubmit="submitWriteForm(this); return false;"
+      style="display : flex; flex-direction: column; gap: 20px; max-width:500px;">
+    <input type="text" name="title" id="input-title" placeholder="제목">
+    <input type="text" name="body" id="input-body" placeholder="내용">
+    <button type="submit">
+        글쓰기
+    </button>
 </form>
 
 <script>
     function submitWriteForm() {
-        const inputTitle = window.document.getElementById('input-title');
-        const inputBody = window.document.getElementById('input-body');
+        const inputTitle = document.getElementById('input-title');
+        const inputBody = document.getElementById('input-body');
 
-        // 나누는 이유 : focusing 과 각 length = 0일 때 trim 된 상태로 값을 집어넣기 위함
-        inputTitle.value = inputTitle.value.trim();
-        inputBody.value = inputBody.value.trim();
+        // 나누는 이유 : focusing 과 각 length = 0일 때 자동으로 trim해 input 내부에 값을 유지하기 위함
+        inputTitle.value = form.title;
+        inputBody.value = form.body;
 
-        if (inputTitle.length === 0){
+        const title = inputTitle.value;
+        const body = inputBody.value;
+
+        if (title.length === 0) {
             alert('제목을 입력해주세요.');
             inputTitle.focus();
             return;
-        }
-        if (inputBody.length === 0){
+        } else if (body.length === 0) {
             alert('내용을 입력해주세요.');
             inputBody.focus();
             return;
+        } else {
+            alert('실행됨');
+            // uri에 값 집어넣기
+            location.href = `/doWrite?title=${title}&body=${body}`
         }
-        alert('실행됨');
-
-        // uri에 값 집어넣기
-        location.href = `/doWrite?title=${inputTitle}&body=${inputBody}`
     }
 </script>
 
