@@ -5,6 +5,39 @@
     <title>Title</title>
 </head>
 <body>
-<a href ="/article/doWrite?title=제목&body=내용">글쓰기</a>
+<form style="display : flex; flex-direction: column; gap: 20px; max-width:500px;">
+    <input type="text" id="input-title" placeholder="제목">
+    <input type="text" id="input-body" placeholder="내용">
+    <!-- javascript:; 아무것도 하지 않겠다는 뜻 -->
+    <a href="javascript:;" onclick="submitWriteForm()">글쓰기</a>
+</form>
+
+<script>
+    function submitWriteForm() {
+        const inputTitle = window.document.getElementById('input-title');
+        const inputBody = window.document.getElementById('input-body');
+
+        // 나누는 이유 : focusing 과 각 length = 0일 때 trim 된 상태로 값을 집어넣기 위함
+        inputTitle.value = inputTitle.value.trim();
+        inputBody.value = inputBody.value.trim();
+
+        if (inputTitle.length === 0){
+            alert('제목을 입력해주세요.');
+            inputTitle.focus();
+            return;
+        }
+        if (inputBody.length === 0){
+            alert('내용을 입력해주세요.');
+            inputBody.focus();
+            return;
+        }
+        alert('실행됨');
+
+        // uri에 값 집어넣기
+        location.href = `/doWrite?title=${inputTitle}&body=${inputBody}`
+    }
+</script>
+
+
 </body>
 </html>
