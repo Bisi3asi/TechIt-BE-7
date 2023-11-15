@@ -1,10 +1,12 @@
 package com.example.springbootdemo.domain.article.article.repository;
 
 import com.example.springbootdemo.domain.article.article.entity.Article;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ArticleRepository {
     private final List<Article> articles = new ArrayList<>();
 
@@ -18,11 +20,11 @@ public class ArticleRepository {
         return article;
     }
 
-    public Article findAll(){
+    public Article findLastArticle(){
         return articles.getLast();
     }
 
-    public List<Article> findLastArticle() {
+    public List<Article> findAll() {
         return articles;
     }
 }
