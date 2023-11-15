@@ -6,8 +6,11 @@
 </head>
 <body>
 <!-- div와 form의 차이 : div는 엔터를 인식 안하고, form은 인식 한다 -->
-<form onsubmit="submitWriteForm(this); return false;"
-      style="display : flex; flex-direction: column; gap: 20px; max-width:500px;">
+<!-- action을 통한 url 매핑 -->
+<!-- POST로 변경 시 동일한 url로 매핑하려면 action을 생략해도 된다. -->
+<form method="POST"
+      onsubmit="submitWriteForm(this); return false;"
+      style="display:flex; flex-direction:column; gap:20px; max-width:500px;">
     <input type="text" name="title" id="input-title" placeholder="제목">
     <input type="text" name="body" id="input-body" placeholder="내용">
     <button type="submit">
@@ -38,7 +41,7 @@
         } else {
             alert('실행됨');
             // uri에 값 집어넣기
-            location.href = `/doWrite?title=${title}&body=${body}`
+            form.submit();
         }
     }
 </script>
