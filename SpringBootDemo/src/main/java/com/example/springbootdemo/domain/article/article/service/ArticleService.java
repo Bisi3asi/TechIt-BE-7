@@ -2,11 +2,15 @@ package com.example.springbootdemo.domain.article.article.service;
 
 import com.example.springbootdemo.domain.article.article.entity.Article;
 import com.example.springbootdemo.domain.article.article.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Service // 저는 단 한번만 생성되고, 그 이후에는 재사용되는 객체입니다.
+// Component와 동일
 public class ArticleService {
+    @Autowired
     private final ArticleRepository articleRepository = new ArticleRepository();
 
     public Article write(String title, String body){
