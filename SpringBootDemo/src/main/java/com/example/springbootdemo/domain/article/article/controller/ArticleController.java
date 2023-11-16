@@ -33,6 +33,23 @@ public class ArticleController {
     @PostMapping("/write")
     @ResponseBody
     RsData<Article> write(String title, String body) {
+        // View 페이지에서 JS를 꺼버리면 필터링이 안되는 것을 방지하기 위한 java 검증 코드
+        if (title == null || title.trim().length()== 0){
+            return new RsData<>(
+                    "F-1",
+                    "제목을 입력해주세요."
+            );
+//            throw new IllegalArgumentException("제목을 입력해주세요.");
+        }
+        if (body == null || body.trim().length()== 0){
+            return new RsData<>(
+                    "F-1",
+                    "내용을 입력해주세요."
+            );
+//            throw new IllegalArgumentException("내용을 입력해주세요.");
+        }
+
+
         Article article = articleService.write(title, body);
         RsData<Article> rs = new RsData(
                 "S-1",
