@@ -29,6 +29,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.hibernate:hibernate-validator:6.1.7.Final'
 }
 
 tasks.named('bootBuildImage') {
