@@ -5,9 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-    <!--리스트에 대한 페이징 처리-->
+    <!-- 리스트에 대한 페이징 처리 -->
     <ul th:if="${articles.size} > 0">
-        <li th:each="article : ${articles}">
+        <!-- 역순 처리 reversed (최신순 정렬) -->
+        <li th:each="article : ${articles.reversed}">
             <a th:href="|/article/detail/${article.id}|" th:text="|${article.id}번 : ${article.title}|"></a>
         </li>
     </ul>
