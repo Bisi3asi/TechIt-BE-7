@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <ul th:if="${articles.size} >= 2">
+        <li th:text="${articles[0].title}"></li>
+        <li th:text="${articles[1].title}"></li>
+        <li th:text="${articles[2].title}"></li>
+        <li th:text="${articles[3].title}"></li>
+        <li th:text="${articles[4].title}"></li>
+        <li th:text="${articles[5].title}"></li>
+    </ul>
+    <hr>
+[[${articles}]]
+</body>
+</html>
