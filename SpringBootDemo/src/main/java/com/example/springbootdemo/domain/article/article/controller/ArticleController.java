@@ -42,16 +42,14 @@ public class ArticleController {
     }
 
     @PostMapping("/write")
-    @ResponseBody
-    RsData<Article> write(@Valid WriteForm writeForm) {
+    String write(@Valid WriteForm writeForm) {
+        // @valid : @NotBlank로 선언된 필드값이 blank면 오류 발생
+        // @NotBlank가 작동 안하게 하려면 @valid를 안붙이면 된다
         // validation을 통한 입력값 검증
         Article article = articleService.write(writeForm.title, writeForm.body);
-        RsData<Article> rs = new RsData(
-                "S-1",
-                "%d번 게시물이 작성되었습니다.".formatted(article.getId()),
-                article
-        );
-        return rs;
+        String msg = "id %d, article created".formatted(article.getId());
+        // redirect는 요청을 두번 보낸다 (데이터 전송, 리다이렉트로 링크 이동)
+        return "redirect:/article/list?msg=" + msg;
     }
 
     @PostMapping("/write2")
@@ -116,6 +114,14 @@ public class ArticleController {
         String rqToString = rq.toString();
         model.addAttribute("rqToString", rqToString);
         return "rqTest";
+    }
+
+    @GetMapping("/list")
+    String showList(Model model){
+        List<Article> articleList = articleService.findAll();
+        model.addAttribute("articles", articleList);
+
+        return "list";
     }
 }
 
