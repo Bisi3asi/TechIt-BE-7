@@ -7,7 +7,9 @@
 <body>
     <!--리스트에 대한 페이징 처리-->
     <ul th:if="${articles.size} > 0">
-        <li th:each="article : ${articles}" th:text="${article.title}"></li>
+        <li th:each="article : ${articles}">
+            <a th:href="|/article/detail/${article.id}|" th:text="|${article.id}번 : ${article.title}|"></a>
+        </li>
     </ul>
 </body>
 </html>
