@@ -1,6 +1,5 @@
 package com.mysite.restsbb.article.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysite.restsbb.global.entity.BaseEntity;
 import com.mysite.restsbb.member.entity.Member;
 import jakarta.persistence.Entity;
@@ -17,7 +16,6 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Article extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private Member author;
     private String title;
     private String body;
