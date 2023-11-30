@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,5 +43,9 @@ public class ArticleService {
         articleRepository.save(article);
 
         return RsData.of("200", "%번 게시글이 수정되었습니다.".formatted(article.getId()), article);
+    }
+
+    public List<Article> findAll() {
+        return articleRepository.findAll();
     }
 }
