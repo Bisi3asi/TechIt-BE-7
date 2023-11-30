@@ -31,8 +31,15 @@ public class NotProd {
 
     @Transactional
     public void work1(){
-        Member member = memberService.join("admin", "1234", "관리자", "admin@test.com").getData();
+        if (memberService.count() > 0) return; // 데이터가 하나라도 적재되어 있으면 create 안함
 
-        Article article = articleService.write(member, "제목1", "내용1").getData();
+        Member member1 = memberService.join("admin", "1234", "admin@test.com", "admin").getData();
+        Member member2 = memberService.join("user1", "1234", "user1@test.com", "user1").getData();
+        Member member3 = memberService.join("user2", "1234", "user1@test.com", "user2").getData();
+
+        for (int i = 0; i < 10; i++){
+            Article article = articleService.write(member2, "제목"+i, "내용"+i).getData();
+        }
+
     }
 }
