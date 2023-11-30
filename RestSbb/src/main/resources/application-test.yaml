@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:restsbb_test;MODE=MYSQL
+  jpa:
+    hibernate:
+      ddl-auto: create
