@@ -13,8 +13,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @RequiredArgsConstructor
 public class ApiSecurityConfig {
     @Bean
+    // Get은 발생하지 않는 csrf 토큰 문제에 대해 Delete, Post는 발생
+    // /api/로 시작하는 url에 대해 csrf를 disable
     SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
+                // securityMatcher(url) 이후로 나오는 모든 작업은 해당 패턴에 해당하는 요청에만 적용
                 .securityMatcher("/api/**")
                 .csrf(AbstractHttpConfigurer::disable)
         ;
