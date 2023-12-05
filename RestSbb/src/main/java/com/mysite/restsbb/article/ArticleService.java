@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,6 @@ public class ArticleService {
     @Transactional
     public RsData<Article> write(Member author, String title, String body) {
         Article article = Article.builder()
-                .modifyDate(LocalDateTime.now())
                 .author(author)
                 .title(title)
                 .body(body)
