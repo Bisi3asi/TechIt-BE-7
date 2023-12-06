@@ -28,6 +28,10 @@ public class MemberService {
         return RsData.of("200", "%s님, 가입에 성공하셨습니다.".formatted(nickname), member);
     }
 
+    public Optional<Member> findByUsername(String username){
+        return memberRepository.findByUsername(username);
+    }
+
     public Optional<Member> findById(Long id){
         return memberRepository.findById(id);
     }
