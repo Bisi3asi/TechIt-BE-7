@@ -1,4 +1,4 @@
-package com.mysite.restsbb.article;
+package com.mysite.restsbb.article.service;
 
 import com.mysite.restsbb.article.entity.Article;
 import com.mysite.restsbb.article.repository.ArticleRepository;
@@ -33,6 +33,7 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
+    @Transactional
     public RsData<Article> modify(Article article, String title, String body){
         article = article.toBuilder()
                 .title(title)
