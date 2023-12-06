@@ -23,7 +23,8 @@ public class Rq {
     public Member getMember() {
         if (member == null) {
             // filter에서 적용한 가짜 유저를 가져온다
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = (User) SecurityContextHolder
+                    .getContext().getAuthentication().getPrincipal();
             user.getUsername();
 
             member = memberService.findByUsername(user.getUsername()).get();

@@ -18,6 +18,7 @@ public class MemberService {
 
     public RsData<Member> join(String username, String password, String email, String nickname) {
         Member member = Member.builder()
+                .username(username)
                 .modifyDate(LocalDateTime.now())
                 .password(passwordEncoder.encode(password))
                 .email(email)
