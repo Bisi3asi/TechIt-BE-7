@@ -1,6 +1,6 @@
 package com.mysite.restsbb.global.initdata;
 
-import com.mysite.restsbb.article.ArticleService;
+import com.mysite.restsbb.article.service.ArticleService;
 import com.mysite.restsbb.article.entity.Article;
 import com.mysite.restsbb.member.entity.Member;
 import com.mysite.restsbb.member.service.MemberService;

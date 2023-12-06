@@ -1,9 +1,11 @@
 package com.mysite.restsbb.article.controller;
 
-import com.mysite.restsbb.article.ArticleService;
 import com.mysite.restsbb.article.dto.ArticleDto;
 import com.mysite.restsbb.article.entity.Article;
+import com.mysite.restsbb.article.service.ArticleService;
+import com.mysite.restsbb.global.rq.Rq;
 import com.mysite.restsbb.global.rsdata.RsData;
+import com.mysite.restsbb.member.entity.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,6 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ApiV1ArticlesController {
     private final ArticleService articleService;
+    private final Rq rq;
 
     // GET (Articles)
     @Getter
@@ -109,5 +112,35 @@ public class ApiV1ArticlesController {
     }
 
     // post
+    @Getter
+    @Setter
+    public static class WriteArticleRequestBody {
+        private String title;
+        private String body;
+    }
 
+    @Getter
+    public static class WriteArticleResponseBody {
+        private final ArticleDto item;
+
+        public WriteArticleResponseBody(Article article) {
+            item = new ArticleDto(article);
+        }
+    }
+
+    @PostMapping("")
+    public RsData<WriteArticleResponseBody> writeArticle(
+            @RequestBody WriteArticleRequestBody body
+    ) {
+        Member member = rq.getMember();
+        Article article = articleService.write(member, body.getTitle(), body.getBody()).getData();
+
+        return RsData.of(
+                "200",
+                "성공",
+                new WriteArticleResponseBody(
+                        article
+                )
+        );
+    }
 }
