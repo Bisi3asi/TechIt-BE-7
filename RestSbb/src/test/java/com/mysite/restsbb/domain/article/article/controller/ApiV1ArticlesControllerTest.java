@@ -101,4 +101,35 @@ public class ApiV1ArticlesControllerTest {
         Article article1 = articleService.findById(1L).orElse(null);
         assertThat(article1).isNull();
     }
+
+    @Test
+    @DisplayName("PUT /api/v1/articles/1")
+    void t4() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(
+                        put("/api/v1/articles/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                        {
+                                            "title": "제목1-수정",
+                                            "body": "내용1-수정"
+                                        }
+                                        """)
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(handler().handlerType(ApiV1ArticlesController.class))
+                .andExpect(handler().methodName("modifyArticle"))
+                .andExpect(jsonPath("$.data.item.id", instanceOf(Number.class)))
+                .andExpect(jsonPath("$.data.item.createDate", matchesPattern(DATE_PATTERN)))
+                .andExpect(jsonPath("$.data.item.modifyDate", matchesPattern(DATE_PATTERN)))
+                .andExpect(jsonPath("$.data.item.authorId", instanceOf(Number.class)))
+                .andExpect(jsonPath("$.data.item.authorName", notNullValue()))
+                .andExpect(jsonPath("$.data.item.title", notNullValue()))
+                .andExpect(jsonPath("$.data.item.body", notNullValue()));
+    }
 }
