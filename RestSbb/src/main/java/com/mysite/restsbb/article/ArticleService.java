@@ -26,7 +26,7 @@ public class ArticleService {
                 .build();
 
         articleRepository.save(article);
-        return RsData.of("200", "%d번 게시글이 작성되었습니다".formatted(article.getId()), article);
+        return RsData.of("200", "%d번 게시글이 작성되었습니다.".formatted(article.getId()), article);
     }
 
     public Optional<Article> findById(long id){
@@ -40,7 +40,7 @@ public class ArticleService {
                 .build();
         articleRepository.save(article);
 
-        return RsData.of("200", "%번 게시글이 수정되었습니다.".formatted(article.getId()), article);
+        return RsData.of("200", "%d번 게시글이 수정되었습니다.".formatted(article.getId()), article);
     }
 
     public List<Article> findAll() {
