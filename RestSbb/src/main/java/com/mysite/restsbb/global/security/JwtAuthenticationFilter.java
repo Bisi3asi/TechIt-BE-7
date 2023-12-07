@@ -43,9 +43,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             // Security 상에서 getContext.setAuthentication으로 Principal 사용 가능
             SecurityContextHolder.getContext().setAuthentication(auth);
-
+        }
             // filter 이후 시점부터는 로그인 된 것으로 간주
             filterChain.doFilter(request, response);
-        }
     }
 }
