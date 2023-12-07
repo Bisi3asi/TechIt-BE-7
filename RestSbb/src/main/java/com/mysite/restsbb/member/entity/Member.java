@@ -1,6 +1,7 @@
 package com.mysite.restsbb.member.entity;
 
 import com.mysite.restsbb.global.entity.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,4 +20,7 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
     private String nickname;
+
+    @Column(unique = true)
+    private String apiKey;
 }
