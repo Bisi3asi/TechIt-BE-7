@@ -16,11 +16,9 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString(callSuper = true)
 public class Member extends BaseEntity {
+    @Column(unique = true)
     private String username;
     private String password;
     private String email;
     private String nickname;
-
-    @Column(unique = true)
-    private String apiKey;
 }

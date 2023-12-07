@@ -12,7 +12,6 @@ public class MemberDto {
     private final LocalDateTime modifyDate;
     private final String username;
     private final String nickname;
-    private final String apiKey;
 
     public MemberDto(Member member) {
         id = member.getId();
@@ -20,6 +19,5 @@ public class MemberDto {
         modifyDate = member.getModifyDate();
         username = member.getUsername();
         nickname = member.getNickname();
-        apiKey = member.getApiKey();
     }
 }
