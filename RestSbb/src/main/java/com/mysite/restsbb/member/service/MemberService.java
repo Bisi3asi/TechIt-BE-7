@@ -34,7 +34,13 @@ public class MemberService {
     }
 
     public Optional<Member> findByApiKey(String apiKey) {
-        return memberRepository.findByApiKey(apiKey);
+        Claims claims = JwtUtil.decode(apiKey);
+
+        Map<String, String> data = (Map<String, String>) claims.get("data");
+        long id = Long.parseLong(data.get("id"));
+
+        // jwt 토큰을 써도 id 조회를 하고 있는데 이 부분은 개선을 할 수 있다.
+        return memberRepository.findById(id);
     }
 
     public RsData<Member> checkUsernameAndPassword(String username, String password) {

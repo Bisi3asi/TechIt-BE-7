@@ -8,9 +8,11 @@ import java.util.Date;
 import java.util.Map;
 
 public class JwtUtil {
+    private static final String SECRET_KEY =
+    "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890";
     public static String encode(Map <String, String> data){
         Claims claims = Jwts.claims()
-                .setSubject("sb-23-11-30 jwt")
+                .setSubject("restSbb")
                 .add("type", "access_token")
                 .add("data", data)
                 .build();
@@ -22,8 +24,15 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256,
-"abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890")
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
+    }
+
+    public static Claims decode(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getPayload();
     }
 }
