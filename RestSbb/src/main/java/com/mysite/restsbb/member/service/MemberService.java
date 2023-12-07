@@ -1,13 +1,16 @@
 package com.mysite.restsbb.member.service;
 
 import com.mysite.restsbb.global.rsdata.RsData;
+import com.mysite.restsbb.global.util.jwt.JwtUtil;
 import com.mysite.restsbb.member.entity.Member;
 import com.mysite.restsbb.member.repository.MemberRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
