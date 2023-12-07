@@ -23,13 +23,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     @SneakyThrows
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
-
-        // parameter로 username을 받는다.
-        String username = request.getParameter("username");
+        String apiKey = request.getHeader("X-ApiKey");
 
         // parameter의 username이 null이 아니면 username으로 id, pw를 조회해 로그인 정보를 넘긴다.
-        if (username != null) {
-            Member member = memberService.findByUsername(username).get();
+        if (apiKey != null) {
+            Member member = memberService.findByApiKey(apiKey).get();
 
             User user = new User(
                     member.getUsername(),
@@ -48,16 +46,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        // username 정보가 파라미터로 안넘어오면 user1로 넘긴다.
-        User user = new User("user1", "", List.of());
-
-        Authentication auth = new UsernamePasswordAuthenticationToken(
-                // filter에 가짜 유저를 넣어서 로그인 된 것처럼 처리
-                user,
-                user.getPassword(),
-                user.getAuthorities()
-        );
 
         // Security 상에서 getContext.setAuthentication으로 Principal 사용 가능
         SecurityContextHolder.getContext().setAuthentication(auth);
