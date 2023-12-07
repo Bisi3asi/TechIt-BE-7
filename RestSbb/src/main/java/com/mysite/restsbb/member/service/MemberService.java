@@ -29,15 +29,33 @@ public class MemberService {
         return RsData.of("200", "%s님, 가입에 성공하셨습니다.".formatted(nickname), member);
     }
 
-    public Optional<Member> findByUsername(String username){
+    public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
 
-    public Optional<Member> findById(Long id){
+    public Optional<Member> findByApiKey(String apiKey) {
+        return memberRepository.findByApiKey(apiKey);
+    }
+
+    public RsData<Member> checkUsernameAndPassword(String username, String password) {
+        Optional<Member> memberOp = findByUsername(username);
+
+        if (memberOp.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+        }
+
+        if (!passwordEncoder.matches(password, memberOp.get().getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        return RsData.of("200", "로그인 성공", memberOp.get());
+    }
+
+    public Optional<Member> findById(Long id) {
         return memberRepository.findById(id);
     }
 
-    public Long count(){
+    public Long count() {
         return memberRepository.count();
     }
 }
