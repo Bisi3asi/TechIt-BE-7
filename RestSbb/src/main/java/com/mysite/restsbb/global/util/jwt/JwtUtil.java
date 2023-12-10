@@ -10,7 +10,7 @@ import java.util.Map;
 public class JwtUtil {
     private static final String SECRET_KEY =
     "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890";
-    public static String encode(Map <String, Object> data){
+    public static String encode(long expirationSeconds, Map <String, Object> data){
         Claims claims = Jwts.claims()
                 .setSubject("restSbb")
                 .add("type", "access_token")
@@ -18,12 +18,12 @@ public class JwtUtil {
                 .build();
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 1000 * 60 * 5);
+        Date expiration = new Date(now.getTime() + 1000 * expirationSeconds);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(validity)
+                .setExpiration(expiration)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }

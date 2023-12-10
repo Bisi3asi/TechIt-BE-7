@@ -46,6 +46,7 @@ public class ApiV1MembersController {
 
         Long id = member.getId();
         String accessToken = JwtUtil.encode(
+                60 * 60 * 24 * 365,
                 Map.of("id", id.toString(),
                         "username", member.getUsername(),
                         "authorities", member.getAuthoritiesAsStrList()));
