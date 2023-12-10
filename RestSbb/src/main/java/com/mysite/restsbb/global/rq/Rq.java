@@ -3,6 +3,7 @@ package com.mysite.restsbb.global.rq;
 
 import com.mysite.restsbb.member.entity.Member;
 import com.mysite.restsbb.member.service.MemberService;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class Rq {
     private final HttpServletResponse response;
     private final MemberService memberService;
     private Member member;
+    private final EntityManager entityManager;
 
     public Member getMember() {
         if (member == null) {
@@ -28,7 +30,9 @@ public class Rq {
             user.getUsername();
             long memberId = Long.parseLong(user.getUsername());
 
-            member = memberService.findById(memberId).get();
+            member = entityManager.getReference(Member.class, memberId);
+            // 프록시 객체를 생성, new Member(memberId)와 같다.
+            // fetchType = Lazy가 걸려 있는 회원 엔티티 객체를 리턴해 회원 Select를 피한다.
         }
 
         return member;
