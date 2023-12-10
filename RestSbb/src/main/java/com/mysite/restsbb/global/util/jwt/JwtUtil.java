@@ -10,7 +10,7 @@ import java.util.Map;
 public class JwtUtil {
     private static final String SECRET_KEY =
     "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890";
-    public static String encode(Map <String, String> data){
+    public static String encode(Map <String, Object> data){
         Claims claims = Jwts.claims()
                 .setSubject("restSbb")
                 .add("type", "access_token")

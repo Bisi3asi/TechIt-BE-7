@@ -45,7 +45,9 @@ public class ApiV1MembersController {
         Member member = checkRs.getData();
 
         Long id = member.getId();
-        String accessToken = JwtUtil.encode(Map.of("id", id.toString()));
+        String accessToken = JwtUtil.encode(
+                Map.of("id", id.toString(),
+                        "authorities", member.getAuthoritiesAsStrList()));
 
         return RsData.of("200", "로그인 성공", new LoginResponseBody(member, accessToken));
     }

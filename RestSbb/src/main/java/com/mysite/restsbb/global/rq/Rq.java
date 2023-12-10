@@ -26,8 +26,9 @@ public class Rq {
             User user = (User) SecurityContextHolder
                     .getContext().getAuthentication().getPrincipal();
             user.getUsername();
+            long memberId = Long.parseLong(user.getUsername());
 
-            member = memberService.findByUsername(user.getUsername()).get();
+            member = memberService.findById(memberId).get();
         }
 
         return member;

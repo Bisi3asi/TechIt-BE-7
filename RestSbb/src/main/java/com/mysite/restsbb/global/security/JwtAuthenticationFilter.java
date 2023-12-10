@@ -1,6 +1,5 @@
 package com.mysite.restsbb.global.security;
 
-import com.mysite.restsbb.member.entity.Member;
 import com.mysite.restsbb.member.service.MemberService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,8 +13,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -27,13 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // parameter의 username이 null이 아니면 username으로 id, pw를 조회해 로그인 정보를 넘긴다.
         if (apiKey != null) {
-            Member member = memberService.findByApiKey(apiKey).get();
-
-            User user = new User(
-                    member.getUsername(),
-                    member.getPassword(),
-                    List.of()
-            );
+            User user = memberService.getUserFromApiKey(apiKey);
 
             Authentication auth = new UsernamePasswordAuthenticationToken(
                     user,

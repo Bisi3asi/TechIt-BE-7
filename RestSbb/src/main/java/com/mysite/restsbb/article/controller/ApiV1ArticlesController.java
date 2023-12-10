@@ -6,15 +6,15 @@ import com.mysite.restsbb.article.service.ArticleService;
 import com.mysite.restsbb.global.rq.Rq;
 import com.mysite.restsbb.global.rsdata.RsData;
 import com.mysite.restsbb.member.entity.Member;
+import com.mysite.restsbb.member.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -22,6 +22,7 @@ import java.util.Optional;
 public class ApiV1ArticlesController {
     private final ArticleService articleService;
     private final Rq rq;
+    private final MemberService memberService;
 
     // GET (Articles)
     @Getter
@@ -130,19 +131,13 @@ public class ApiV1ArticlesController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("")
     public RsData<WriteArticleResponseBody> writeArticle(
-            @RequestBody WriteArticleRequestBody body,
-            Principal principal
+            @RequestBody WriteArticleRequestBody body
     ) {
         Member member = rq.getMember();
-        Optional.ofNullable(principal)
-                .ifPresentOrElse(
-                        p -> System.out.println("로그인 : " + p.getName()),
-                        () -> System.out.println("비로그인")
-                );
         Article article = articleService.write(member, body.getTitle(), body.getBody()).getData();
-
 
         return RsData.of(
                 "200",

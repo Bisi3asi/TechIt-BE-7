@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -104,6 +105,7 @@ public class ApiV1ArticlesControllerTest {
 
     @Test
     @DisplayName("PUT /api/v1/articles/1")
+    @WithUserDetails("user1") // UserDetailService로 loadbyUsername을 통해 불러오는 user 정보
     void t4() throws Exception {
         // WHEN
         ResultActions resultActions = mvc

@@ -6,10 +6,14 @@ import com.mysite.restsbb.member.entity.Member;
 import com.mysite.restsbb.member.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,14 +40,17 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
-    public Optional<Member> findByApiKey(String apiKey) {
+    public User getUserFromApiKey(String apiKey) {
         Claims claims = JwtUtil.decode(apiKey);
 
-        Map<String, String> data = (Map<String, String>) claims.get("data");
-        long id = Long.parseLong(data.get("id"));
+        Map<String, Object> data = (Map<String, Object>) claims.get("data");
+        String id = (String) data.get("id");
+        List<? extends GrantedAuthority> authorities = ((List<String>) data.get("authorities")).stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
 
         // jwt 토큰을 써도 id 조회를 하고 있는데 이 부분은 개선을 할 수 있다.
-        return memberRepository.findById(id);
+        return new User(id, "", authorities);
     }
 
     public RsData<Member> checkUsernameAndPassword(String username, String password) {

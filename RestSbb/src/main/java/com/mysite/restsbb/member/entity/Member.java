@@ -8,6 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.List;
 
 @Entity
 @SuperBuilder(toBuilder = true)
@@ -21,4 +25,16 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
     private String nickname;
+
+    @SuppressWarnings("JpaAttributeTypeInspection") // ? extends SimpleGrantedAuthority 관련  warning 제거
+    public List<? extends GrantedAuthority> getAuthorities() {
+        return getAuthoritiesAsStrList().stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+    }
+
+    @SuppressWarnings("JpaAttributeTypeInspection")
+    public List<String> getAuthoritiesAsStrList(){
+        return List.of("ROLE_MEMBER");
+    }
 }
