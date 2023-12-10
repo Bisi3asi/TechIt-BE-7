@@ -54,31 +54,34 @@ public class Rq {
 
     public Member getMember() {
         if (isLogout()) return null;
+
         if (member == null) {
-            member = entityManager.getReference(Member.class, getSecurityUser().getId());
             // 프록시 객체를 생성, new Member(memberId)와 같다.
             // fetchType = Lazy가 걸려 있는 회원 엔티티 객체를 리턴해 회원 Select를 피한다.
+            member = entityManager.find(Member.class, getSecurityUser().getId());
         }
 
         return member;
     }
 
-    public String getHeader(String name, String defaultValue){
+    public String getHeader(String name, String defaultValue) {
         String value = request.getHeader(name);
-        if (value == null){
+
+        if (value == null) {
             return defaultValue;
         }
-        return null;
+
+        return value;
     }
 
     // JwtAuthenticationFilter에서 해당 user의 principal과 권한 설정하는 기능을 리팩토링
-    public void setAuthentication(SecurityUser user){
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
+    public void setAuthentication(SecurityUser user) {
+        Authentication auth = new UsernamePasswordAuthenticationToken(
                 user,
                 user.getPassword(),
-                user.getAuthorities());
-
+                user.getAuthorities()
+        );
         // Security 상에서 getContext.setAuthentication으로 Principal 사용 가능
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }
