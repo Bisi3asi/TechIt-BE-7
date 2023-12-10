@@ -7,9 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,9 +25,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityUser user = memberService.getUserFromApiKey(apiKey);
 
             rq.setAuthentication(user);
-
-            // Security 상에서 getContext.setAuthentication으로 Principal 사용 가능
-            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
             // filter 이후 시점부터는 로그인 된 것으로 간주
             filterChain.doFilter(request, response);

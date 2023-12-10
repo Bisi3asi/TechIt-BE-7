@@ -78,6 +78,7 @@ public class Rq {
                 user.getPassword(),
                 user.getAuthorities());
 
+        // Security 상에서 getContext.setAuthentication으로 Principal 사용 가능
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
