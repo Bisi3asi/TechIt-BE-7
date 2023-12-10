@@ -1,6 +1,7 @@
 package com.mysite.restsbb.member.service;
 
 import com.mysite.restsbb.global.rsdata.RsData;
+import com.mysite.restsbb.global.security.SecurityUser;
 import com.mysite.restsbb.global.util.jwt.JwtUtil;
 import com.mysite.restsbb.member.entity.Member;
 import com.mysite.restsbb.member.repository.MemberRepository;
@@ -8,7 +9,6 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,17 +40,18 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
-    public User getUserFromApiKey(String apiKey) {
+    public SecurityUser getUserFromApiKey(String apiKey) {
         Claims claims = JwtUtil.decode(apiKey);
 
         Map<String, Object> data = (Map<String, Object>) claims.get("data");
-        String id = (String) data.get("id");
+        long id = Long.parseLong((String) data.get("id"));
+        String username = (String) data.get("username");
         List<? extends GrantedAuthority> authorities = ((List<String>) data.get("authorities")).stream()
                 .map(SimpleGrantedAuthority::new)
                 .toList();
 
         // jwt 토큰을 써도 id 조회를 하고 있는데 이 부분은 개선을 할 수 있다.
-        return new User(id, "", authorities);
+        return new SecurityUser(id, username, "", authorities);
     }
 
     public RsData<Member> checkUsernameAndPassword(String username, String password) {
