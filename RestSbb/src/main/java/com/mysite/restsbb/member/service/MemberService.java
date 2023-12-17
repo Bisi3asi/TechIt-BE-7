@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -74,5 +75,14 @@ public class MemberService {
 
     public Long count() {
         return memberRepository.count();
+    }
+
+    public Optional<Member> findByRefreshToken(String refreshToken) {
+        return memberRepository.findByRefreshToken(refreshToken);
+    }
+
+    @Transactional
+    public void setRefreshToken(Member member, String refreshToken) {
+        member.setRefreshToken(refreshToken);
     }
 }

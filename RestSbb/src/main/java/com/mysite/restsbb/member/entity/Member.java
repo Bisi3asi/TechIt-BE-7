@@ -3,10 +3,7 @@ package com.mysite.restsbb.member.entity;
 import com.mysite.restsbb.global.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +22,8 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
     private String nickname;
+    @Setter
+    private String refreshToken;
 
     @SuppressWarnings("JpaAttributeTypeInspection") // ? extends SimpleGrantedAuthority 관련  warning 제거
     public List<? extends GrantedAuthority> getAuthorities() {
