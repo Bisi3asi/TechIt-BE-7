@@ -48,7 +48,7 @@ public class ApiV1MembersController {
 
         Long id = member.getId();
         String accessToken = JwtUtil.encode(
-                60 * 10, // jkt 토큰의 수명을 10분으로 단축
+                60 * 10, // jwt 토큰의 수명을 10분으로 단축
                 Map.of("id", id.toString(),
                         "username", member.getUsername(),
                         "authorities", member.getAuthoritiesAsStrList()));
