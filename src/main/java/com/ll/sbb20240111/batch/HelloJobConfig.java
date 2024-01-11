@@ -17,25 +17,24 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class HelloJobConfig {
     @Bean
-    public Job helloJob(JobRepository jobRepository, Step simpleStep1) {
+    public Job helloJob(JobRepository jobRepository, Step helloStep1) {
         return new JobBuilder("helloJob", jobRepository)
-                .start(simpleStep1)
+                .start(helloStep1)
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
 
     @Bean
-    public Step helloStep1(JobRepository jobRepository, Tasklet helloStep1Tasklet1, PlatformTransactionManager platformTransactionManager) {
-        return new StepBuilder("helloStep1Tasklet1", jobRepository)
-                .tasklet(helloStep1Tasklet1, platformTransactionManager)
+    public Step helloStep1(JobRepository jobRepository, Tasklet helloStep1Tasklet, PlatformTransactionManager platformTransactionManager) {
+        return new StepBuilder("helloStep1Tasklet", jobRepository)
+                .tasklet(helloStep1Tasklet, platformTransactionManager)
                 .build();
     }
 
     @Bean
-    public Tasklet helloStep1Tasklet1() {
+    public Tasklet helloStep1Tasklet() {
         return ((contribution, chunkContext) -> {
-            log.info("Hello World");
-            System.out.println("Hello World");
+            System.out.println("Hello World 1/1");
             return RepeatStatus.FINISHED;
         });
     }
