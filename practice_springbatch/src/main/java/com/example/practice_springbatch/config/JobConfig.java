@@ -15,20 +15,20 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
-public class HelloJobConfig {
+public class JobConfig {
 	@Bean
-	public Job helloJob1(JobRepository jobRepository, Step simpleStep1) {
-		return new JobBuilder("helloJob1", jobRepository)
-			.start(simpleStep1)
+	public Job job(JobRepository jobRepository, Step step) {
+		return new JobBuilder("hellojob", jobRepository) // yml의 job.name 설정에 맞는 job만 실행
+			.start(step)
 			.build();
 	}
 	@Bean
-	public Step helloStep1(JobRepository jobRepository, Tasklet helloStep1Tasklet1, PlatformTransactionManager platformTransactionManager){
-		return new StepBuilder("helloStep1Tasklet1", jobRepository)
-			.tasklet(helloStep1Tasklet1, platformTransactionManager).build();
+	public Step step(JobRepository jobRepository, Tasklet stepTasklet, PlatformTransactionManager platformTransactionManager){
+		return new StepBuilder("stepTasklet", jobRepository)
+			.tasklet(stepTasklet, platformTransactionManager).build();
 	}
 	@Bean
-	public Tasklet helloStep1Tasklet1(){
+	public Tasklet stepTasklet(){
 		return ((contribution, chunkContext) -> {
 			log.info("hello world");
 			return RepeatStatus.FINISHED;

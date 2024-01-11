@@ -2,13 +2,15 @@ spring:
   batch:
     job:
       enabled: true
+      name: ${job.name:hellojob} # enabled = true? ?, ?? ??? job? ????? ?? ??
+                                 # job ??? ??? BeanCreationError: No job found with name ??
     jdbc:
       initialize-schema: always
   h2:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:db;MODE=MYSQL; # ??? ??? initialize-schema : always? ???? ????.
+    url: jdbc:h2:mem:db;MODE=MYSQL;
     username: sa
     password:
     driver-class-name: org.h2.Driver
