@@ -21,6 +21,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      name: hello2Job
 logging:
   level:
     com.ll.sbb20240111: DEBUG
