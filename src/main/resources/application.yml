@@ -22,7 +22,7 @@ spring:
     jdbc:
       initialize-schema: always
     job:
-      name: hello2Job
+      enabled: false
 logging:
   level:
     com.ll.sbb20240111: DEBUG
