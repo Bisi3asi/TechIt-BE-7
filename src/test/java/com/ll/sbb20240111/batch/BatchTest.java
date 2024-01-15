@@ -16,17 +16,25 @@ public class BatchTest {
     private JobLauncherTestUtils helloJobLauncherTestUtils;
     @Autowired
     private JobLauncherTestUtils hello2JobLauncherTestUtils;
+    @Autowired
+    private JobLauncherTestUtils hello3JobLauncherTestUtils;
 
-    @DisplayName("t1")
+    @DisplayName("helloJob")
     @Test
     public void t1() throws Exception {
         helloJobLauncherTestUtils.launchJob();
     }
 
-    @DisplayName("t2")
+    @DisplayName("hello2Job")
     @Test
     public void t2() throws Exception {
         hello2JobLauncherTestUtils.launchJob();
+    }
+
+    @DisplayName("hello3Job")
+    @Test
+    public void t3() throws Exception {
+        hello3JobLauncherTestUtils.launchJob();
     }
 }
 
