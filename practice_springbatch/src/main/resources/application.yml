@@ -2,8 +2,6 @@ spring:
   batch:
     job:
       enabled: true
-      name: ${job.name:hellojob} # enabled = true? ?, ?? ??? job? ????? ?? ??
-                                 # job ??? ??? BeanCreationError: No job found with name ??
     jdbc:
       initialize-schema: always
   h2:
