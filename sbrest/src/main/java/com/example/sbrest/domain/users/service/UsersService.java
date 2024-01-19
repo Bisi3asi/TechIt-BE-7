@@ -1,9 +1,12 @@
 package com.example.sbrest.domain.users.service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +21,9 @@ import com.example.sbrest.domain.users.repository.UsersRepository;
 import com.example.sbrest.global.jwt.JwtUtil;
 import com.example.sbrest.global.jwt.JwtUtilProperties;
 import com.example.sbrest.global.rq.Rq;
+import com.example.sbrest.global.security.SecurityUser;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -57,6 +62,32 @@ public class UsersService {
 		return new UsersLoginResponseDto(users.getUsername(), users.getAuthorities().toString());
 	}
 
+	public SecurityUser findUserByAccessToken(String accessToken) {
+		Claims claims = JwtUtil.decodeToken(accessToken, jwtUtilProperties.getSECRET_KEY());
+		if (claims == null) {
+			return null;
+		}
+
+		Map<String, Object> data = (Map<String, Object>) claims.get("data");
+		long id = Long.parseLong((data.get("id").toString()));
+		String username = (String) data.get("username");
+		List<? extends GrantedAuthority> authorities =
+			((List<String>) data.get("authorities")).stream()
+				.map(SimpleGrantedAuthority::new)
+				.toList();
+
+		return new SecurityUser(id, username, "", authorities);
+	}
+
+	public String makeToken(Users users, int minute) {
+		return JwtUtil.encodeToken(
+			Map.of(
+				"id", users.getId().toString(),
+				"username", users.getUsername(),
+				"authorities", users.getGrantedAuthoritiesAsStrList()
+			), minute, jwtUtilProperties.getSECRET_KEY());
+	}
+
 	@Transactional
 	public void create(UsersJoinRequestDto usersJoinRequestDto) {
 		if (usersRepository.findByUsername(usersJoinRequestDto.getUsername()).isPresent()) {
@@ -72,7 +103,6 @@ public class UsersService {
 		usersRepository.save(users);
 	}
 
-
 	@Transactional
 	public void setTokenWhenLogin(Users users) {
 		String accessToken = makeToken(users, 5);
@@ -87,14 +117,5 @@ public class UsersService {
 	public void setRefreshToken(Users users, String refreshToken) {
 		users.setRefreshToken(refreshToken);
 		usersRepository.save(users);
-	}
-
-	public String makeToken(Users users, int minute) {
-		return JwtUtil.encodeToken(
-			Map.of(
-				"id", users.getId().toString(),
-				"username", users.getUsername(),
-				"authorities", users.getGrantedAuthoritiesAsStrList()
-			), minute, jwtUtilProperties.getSECRET_KEY());
 	}
 }
