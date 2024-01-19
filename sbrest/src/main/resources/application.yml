@@ -5,10 +5,10 @@ spring:
     virtual:
       enabled: true
   datasource:
-    url: jdbc:log4jdbc:h2:./db_dev;MODE=MYSQL
+    url: jdbc:log4jdbc:h2:./db;MODE=MYSQL
     username: sa
     password:
-    driver-class-name: org.h2.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
   jpa:
     hibernate:
       ddl-auto: update

@@ -38,6 +38,7 @@ dependencies {
 
 	// log4jdbc
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
 	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
