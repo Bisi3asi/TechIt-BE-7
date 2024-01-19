@@ -1,0 +1,9 @@
+server:
+  port: 8090
+spring:
+  output:
+    ansi:
+      enabled: always
+hidden:
+  jwt:
+    secret-key: greatbisi3asichallengegreatbisi3asichallengegreatbisi3asichallengegreatbisi3asichallenge
