@@ -7,8 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.sbrest.domain.article.dto.ArticleRequestDto;
 import com.example.sbrest.domain.article.dto.ArticleResponseDto;
@@ -34,15 +36,16 @@ public class ArticleService {
 		return articlePage.map(this::buildArticleResponseDto);
 	}
 
-	public ArticleResponseDto get(Long id){
-		Article article = articleRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("No Article"));
+	public ArticleResponseDto get(Long id) {
+		Article article = articleRepository.findById(id).orElseThrow(
+			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ERROR : 해당 회원을 찾을 수 없습니다.")
+		);
 
 		return buildArticleResponseDto(article);
 	}
 
 	@Transactional
-	public ArticleResponseDto create(ArticleRequestDto articleRequestDto, Users users){
+	public ArticleResponseDto create(ArticleRequestDto articleRequestDto, Users users) {
 
 		Article article = Article.builder()
 			.title(articleRequestDto.getTitle())
