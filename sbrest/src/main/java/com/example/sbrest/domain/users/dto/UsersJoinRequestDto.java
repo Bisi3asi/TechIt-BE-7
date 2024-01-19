@@ -2,6 +2,7 @@ package com.example.sbrest.domain.users.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UsersJoinRequestDto {
 	@NotBlank(message = "ID를 입력해주세요.")
 	@Size(min = 8, max = 20, message = "ID를 8 ~ 20자 이내로 입력해주세요.")

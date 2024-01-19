@@ -1,5 +1,6 @@
 package com.example.sbrest.domain.users.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -98,7 +99,7 @@ public class UsersService {
 			.username(usersJoinRequestDto.getUsername())
 			.nickname(usersJoinRequestDto.getNickname())
 			.password(passwordEncoder.encode(usersJoinRequestDto.getPassword()))
-			.authorities(Set.of(Role.USER))
+			.authorities(Collections.singleton(Role.USER))
 			.build();
 		usersRepository.save(users);
 	}
