@@ -4,6 +4,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
 import com.example.sbrest.global.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -28,12 +30,12 @@ public class ApiSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.
 			securityMatcher("/api/**")
-				.authorizeRequests(
-					authorizeRequests -> authorizeRequests
-						.requestMatchers("/api/*/members/login", "api/*/members/logout").permitAll()
-						.requestMatchers("/api/*/articles" , "/api/*/articles/{\\d+}").permitAll()
-						.anyRequest().permitAll() // 이후 authenticated으로 수정
-				)
+			.authorizeRequests(
+				authorizeRequests -> authorizeRequests
+					.requestMatchers(HttpMethod.GET, "api/*/members/logout").authenticated()
+					.requestMatchers(HttpMethod.POST, "api/*/articles").authenticated()
+					.anyRequest().permitAll()
+			)
 			.csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
 			.sessionManagement(s ->
 				s.sessionCreationPolicy(STATELESS)

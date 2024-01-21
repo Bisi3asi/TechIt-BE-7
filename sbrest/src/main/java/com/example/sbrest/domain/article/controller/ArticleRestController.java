@@ -41,7 +41,7 @@ public class ArticleRestController {
 	}
 
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/articles")
+	@PostMapping("")
 	public ResponseEntity write(@RequestBody @Valid ArticleRequestDto articleRequestDto, BindingResult brs, Principal principal) {
 		if (brs.hasErrors()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(brs.getAllErrors());
