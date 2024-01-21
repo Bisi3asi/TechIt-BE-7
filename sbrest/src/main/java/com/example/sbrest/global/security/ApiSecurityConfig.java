@@ -27,13 +27,17 @@ public class ApiSecurityConfig {
 	@SneakyThrows
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.
-			csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
+			securityMatcher("/api/**")
+				.authorizeRequests(
+					authorizeRequests -> authorizeRequests
+						.requestMatchers("/api/*/members/login", "api/*/members/logout").permitAll()
+						.requestMatchers("/api/*/articles" , "/api/*/articles/{\\d+}").permitAll()
+						.anyRequest().permitAll() // 이후 authenticated으로 수정
+				)
+			.csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화
 			.sessionManagement(s ->
 				s.sessionCreationPolicy(STATELESS)
 					.sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::none)) // 세션 생성 비활성화
-			.authorizeRequests(authorizeRequests ->
-				authorizeRequests.requestMatchers("/**").permitAll()
-			)
 			.headers(
 				headers ->
 					headers.frameOptions(

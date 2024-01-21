@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,17 +42,12 @@ public class ArticleRestController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/articles")
-	public ResponseEntity write(@Valid ArticleRequestDto articleRequestDto,
-		BindingResult brs,
-		Principal principal) {
+	public ResponseEntity write(@RequestBody @Valid ArticleRequestDto articleRequestDto, BindingResult brs, Principal principal) {
 		if (brs.hasErrors()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(brs.getAllErrors());
 		}
 		return ResponseEntity.ok(
-			articleService.create(
-				articleRequestDto,
-				usersService.findByUsername(principal.getName())
-			)
+			articleService.create(articleRequestDto, usersService.findByUsername(principal.getName()))
 		);
 	}
 }
