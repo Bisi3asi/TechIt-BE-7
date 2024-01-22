@@ -34,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 // todo : validation 관련 전역 exception 처리
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/articles", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/articles", produces = APPLICATION_JSON_VALUE)
 @Tag(name = "ArticleRestController", description = "게시글 컨트롤러 API")
 public class ArticleRestController {
 	private final ArticleService articleService;
