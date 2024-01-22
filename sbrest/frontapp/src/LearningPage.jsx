@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Library from './Library'
+import Library from './ch3/Library';
+import Clock from "./ch4/clock";
 
 function LearningPage() {
   return (
@@ -10,7 +11,9 @@ function LearningPage() {
     {/* 실습 시작 */}
     <ul className="py-10">
       <li>1장<Library /></li>
-      <li>2장</li>
+      <li>2장
+      <Clock />
+      </li>
     </ul>
     </div>
   );
