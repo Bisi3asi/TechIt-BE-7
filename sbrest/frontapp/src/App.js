@@ -1,15 +1,30 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 function App() {
   const [articleList, setArticleList] = useState(null);
+  const [user, setUser] = useState(null);
 
   const fetchData = async () => {
     const response = await axios.get("http://localhost:8090/api/v1/articles");
     setArticleList(response.data);
   };
+
+  const checkLoggedIn = async () => {
+    try {
+      const response = await axios.get("http://localhost:8090/api/v1/users", {
+        withCredentials: true,
+      });
+      setUser(response.data);
+    } catch (error) {
+      console.error("로그인되어 있지 않음");
+      setUser(null);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    checkLoggedIn();
   }, []);
 
   const onLoginHandler = async (e) => {
@@ -17,9 +32,18 @@ function App() {
     const username = e.target.username.value;
     const password = e.target.password.value;
 
-    await axios.post("http://localhost:8090/api/v1/users/login", 
-    {username, password}, {withCredentials: true})
+    await axios.post(
+      "http://localhost:8090/api/v1/users/login",
+      { username, password },
+      { withCredentials: true }
+    );
     fetchData();
+    checkLoggedIn();
+  };
+
+  const onLogoutHandler = async () => {
+    await axios.get("http://localhost:8090/api/v1/users/logout");
+    setUser(null);
   };
 
   const onSubmitHandler = async (e) => {
@@ -27,38 +51,53 @@ function App() {
 
     const title = e.target.title.value;
     const content = e.target.content.value;
-    await axios.post("http://localhost:8090/api/v1/articles", {title, content}, {withCredentials: true})
+    await axios.post(
+      "http://localhost:8090/api/v1/articles",
+      { title, content },
+      { withCredentials: true }
+    );
     fetchData();
   };
 
   return (
     <div className="App">
-      <form onSubmit={onLoginHandler}>
+      {user ? (
         <p>
-          아이디 : <input name="username" />
+          <form onSubmit={onLogoutHandler}>
+            환영합니다, {user.nickname}님 / {user.role}
+            &nbsp;
+            <input type="submit" value="로그아웃" />
+          </form>
         </p>
-        <p>
-          비밀번호: <input name="password" type="password" />
-        </p>
-        <p>
-          <input type="submit" value="로그인하기" />
-        </p>
-        <h1>REST SB 게시판</h1>
-      </form>
-      <form onSubmit={onSubmitHandler}>
-        <p>글 제목</p>
-        <p>
-          <input name="title" />
-        </p>
-        <p>글 내용</p>
-        <p>
-          <input name="content" />
-        </p>
-        <p>
-          <input type="submit" value="등록하기" />
-        </p>
-      </form>
-      <p></p>
+      ) : (
+        <form onSubmit={onLoginHandler}>
+          <p>
+            아이디 : <input name="username" />
+            &nbsp; 비밀번호: <input name="password" type="password" />
+            &nbsp; <input type="submit" value="로그인" />
+          </p>
+          <hr></hr>
+        </form>
+      )}
+      <h1>REST SB 게시판</h1>
+      {user ? (
+        <form onSubmit={onSubmitHandler}>
+          <p>글 제목</p>
+          <p>
+            <input name="title" />
+          </p>
+          <p>글 내용</p>
+          <p>
+            <input name="content" />
+          </p>
+          <p>
+            <input type="submit" value="등록하기" />
+          </p>
+        </form>
+      ) : (
+        <p>글 작성은 로그인 이후 가능합니다.</p>
+      )}
+      <hr></hr>
       {articleList && (
         <table>
           <thead>
