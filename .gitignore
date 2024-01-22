@@ -37,6 +37,6 @@ out/
 .vscode/
 
 ### CUSTOM ###
-db_dev.mv.db
-db_dev.trace.db
-src/main/resources/application-secret.yml
+*.db
+**/application-secret.yml
+**/InitData.java

@@ -22,7 +22,7 @@ public class InitData {
 	private final ArticleService articleService;
 	private final UsersService usersService;
 
-	@Profile("dev")
+	@Profile("!dev")
 	@Bean
 	public ApplicationRunner init() {
 		return new ApplicationRunner() {
@@ -38,7 +38,7 @@ public class InitData {
 				));
 				Users user1 = usersService.findByUsername("restuser1");
 
-				for (int i = 1; i < 2; i++) {
+				for (int i = 1; i < 30; i++) {
 					articleService.create(new ArticleRequestDto(
 							String.format("테스트 글 %d", i),
 							String.format("테스트 내용 %d", i)
