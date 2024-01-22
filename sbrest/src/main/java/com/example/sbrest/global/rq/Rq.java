@@ -2,6 +2,7 @@ package com.example.sbrest.global.rq;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,28 +32,38 @@ public class Rq {
 	private Users user;
 	private SecurityUser securityUser;
 
-	public boolean isLogin(){
+	public boolean isLogin() {
 		return getSecurityUser() != null;
 	}
-	public Users getMember(){
-		if (!isLogin()) return null;
 
-		if (user == null){
+	public Users getMember() {
+		if (!isLogin())
+			return null;
+
+		if (user == null) {
 			user = entityManager.find(Users.class, getSecurityUser().getId());
 		}
 		return user;
 	}
 
 	public void setAccessTokenToCookie(String accessToken) {
-		Cookie cookie = new Cookie("accessToken", accessToken);
-		cookie.setPath("/");
-		resp.addCookie(cookie);
+		ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+			.path("/")
+			.secure(true)
+			.httpOnly(true)
+			.sameSite("None")
+			.build();
+		resp.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	public void setRefreshTokenToCookie(String refreshToken) {
-		Cookie cookie = new Cookie("refreshToken", refreshToken);
-		cookie.setPath("/");
-		resp.addCookie(cookie);
+		ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+			.path("/")
+			.secure(true)
+			.httpOnly(true)
+			.sameSite("None")
+			.build();
+		resp.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	public String getAccessTokenFromCookie(String defaultValue) {
@@ -82,19 +93,25 @@ public class Rq {
 	}
 
 	public void removeAccessTokenFromCookie() {
-		Cookie cookie = new Cookie("accessToken", "");
-		cookie.setPath("/");
-		cookie.setMaxAge(0);
-
-		resp.addCookie(cookie);
+		ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+			.path("/")
+			.secure(true)
+			.httpOnly(true)
+			.sameSite("None")
+			.maxAge(0)
+			.build();
+		resp.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	public void removeRefreshTokenFromCookie() {
-		Cookie cookie = new Cookie("refreshToken", "");
-		cookie.setPath("/");
-		cookie.setMaxAge(0);
-
-		resp.addCookie(cookie);
+		ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+			.path("/")
+			.secure(true)
+			.httpOnly(true)
+			.sameSite("None")
+			.maxAge(0)
+			.build();
+		resp.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	public void setAuthentication(SecurityUser user) {

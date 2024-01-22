@@ -4,10 +4,8 @@ import static org.springframework.http.MediaType.*;
 
 import java.security.Principal;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 // todo : validation 관련 전역 exception 처리
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/users", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/users", produces = APPLICATION_JSON_VALUE)
 @Tag(name = "UsersRestController", description = "유저 컨트롤러 API")
 public class UsersRestController {
 	private final Rq rq;
@@ -40,8 +38,8 @@ public class UsersRestController {
 	@Operation(summary = "로그인 상태 조회", description = "(Login Required) 로그인된 사용자 ID를 리턴합니다.")
 	@GetMapping("")
 	@PreAuthorize("isAuthenticated()")
-	public ResponseEntity<UsersLoginResponseDto> showIsLogined(Principal principal){
-		if (principal == null){
+	public ResponseEntity<UsersLoginResponseDto> showIsLogined(Principal principal) {
+		if (principal == null) {
 			return ResponseEntity.badRequest().body(new UsersLoginResponseDto(null, "로그인되어 있지 않습니다."));
 		}
 		Users users = usersService.findByUsername(principal.getName());
@@ -74,12 +72,12 @@ public class UsersRestController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/logout")
 	public ResponseEntity<UsersLogoutResponseDto> logout(Principal principal) {
-		Users users = usersService.findByUsername(principal.getName());
-
-		if (rq.getAccessTokenFromCookie(null) != null) {
+		if (rq.getAccessTokenFromCookie(null) != null ||
+			rq.getRefreshTokenFromCookie(null) != null) {
 			rq.removeAccessTokenFromCookie();
+			rq.removeRefreshTokenFromCookie();
 		}
 
-		return ResponseEntity.ok(new UsersLogoutResponseDto(users.getNickname(), "로그아웃 성공"));
+		return ResponseEntity.ok(new UsersLogoutResponseDto(null, "로그아웃 성공"));
 	}
 }
