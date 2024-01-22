@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
+import LearningPage from "./LearningPage";
 
 function App() {
   const [articleList, setArticleList] = useState(null);
@@ -60,7 +62,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App mx-2">
       {user ? (
         <p>
           <form onSubmit={onLogoutHandler}>
@@ -79,7 +81,7 @@ function App() {
           <hr></hr>
         </form>
       )}
-      <h1>REST SB 게시판</h1>
+      <h1 className="text-3xl my-5 font-bold">REST SB 게시판</h1>
       {user ? (
         <form onSubmit={onSubmitHandler}>
           <p>글 제목</p>
@@ -91,7 +93,7 @@ function App() {
             <input name="content" />
           </p>
           <p>
-            <button className="btn" value="등록하기"></button>
+            <button className="btn">등록하기</button>
           </p>
         </form>
       ) : (
@@ -118,8 +120,28 @@ function App() {
           </tbody>
         </table>
       )}
+      <div className="btn btn-primary my-6">
+        <Link to="/learning">이동하기 (학습 페이지)</Link>
+      </div>
     </div>
   );
 }
 
-export default App;
+function Main() {
+  return (
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="/learning" element={<LearningPage />} />
+    </Routes>
+  );
+}
+
+function Root() {
+  return (
+    <Router>
+      <Main />
+    </Router>
+  );
+}
+
+export default Root;
