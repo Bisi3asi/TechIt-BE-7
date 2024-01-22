@@ -91,7 +91,7 @@ function App() {
             <input name="content" />
           </p>
           <p>
-            <input type="submit" value="등록하기" />
+            <button className="btn" value="등록하기"></button>
           </p>
         </form>
       ) : (
@@ -99,7 +99,7 @@ function App() {
       )}
       <hr></hr>
       {articleList && (
-        <table>
+        <table className="w-full text-center">
           <thead>
             <tr>
               <th>글 번호</th>
