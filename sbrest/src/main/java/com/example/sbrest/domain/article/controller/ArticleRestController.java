@@ -1,5 +1,7 @@
 package com.example.sbrest.domain.article.controller;
 
+import static org.springframework.http.MediaType.*;
+
 import java.security.Principal;
 
 import org.springframework.data.domain.Page;
@@ -20,12 +22,14 @@ import com.example.sbrest.domain.article.dto.ArticleResponseDto;
 import com.example.sbrest.domain.article.service.ArticleService;
 import com.example.sbrest.domain.users.service.UsersService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/articles")
+@RequestMapping(value = "/api/v1/articles", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@Tag(name = "ArticleRestController", description = "게시글 컨트롤러 API")
 public class ArticleRestController {
 	private final ArticleService articleService;
 	private final UsersService usersService;

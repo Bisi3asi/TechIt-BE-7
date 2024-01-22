@@ -1,5 +1,7 @@
 package com.example.sbrest.domain.users.controller;
 
+import static org.springframework.http.MediaType.*;
+
 import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
@@ -19,12 +21,14 @@ import com.example.sbrest.domain.users.entity.Users;
 import com.example.sbrest.domain.users.service.UsersService;
 import com.example.sbrest.global.rq.Rq;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping(value = "/api/v1/users", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@Tag(name = "UsersRestController", description = "유저 컨트롤러 API")
 public class UsersRestController {
 	private final UsersService usersService;
 	private final Rq rq;
