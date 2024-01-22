@@ -1,4 +1,4 @@
-package com.example.sbrest.global.springDoc;
+package com.example.sbrest.global.springdoc;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
