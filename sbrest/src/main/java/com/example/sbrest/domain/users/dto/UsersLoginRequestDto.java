@@ -10,9 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Schema(description = "유저 로그인 요청 DTO")
 public class UsersLoginRequestDto {
-	@Schema(description = "사용자 ID")
+	@Schema(description = "사용자 ID", defaultValue = "exampleId")
 	private String username;
 
-	@Schema(description = "사용자 비밀번호")
+	@Schema(description = "사용자 비밀번호", defaultValue = "12345678")
 	private String password;
 }

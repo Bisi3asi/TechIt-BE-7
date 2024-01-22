@@ -22,6 +22,7 @@ import com.example.sbrest.domain.article.dto.ArticleResponseDto;
 import com.example.sbrest.domain.article.service.ArticleService;
 import com.example.sbrest.domain.users.service.UsersService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,16 +35,19 @@ public class ArticleRestController {
 	private final ArticleService articleService;
 	private final UsersService usersService;
 
+	@Operation(summary = "게시물 전체조회", description = "page param에 따라 10건씩 조회")
 	@GetMapping("")
 	public ResponseEntity<Page<ArticleResponseDto>> getArticles(@RequestParam(defaultValue = "0") int page) {
 		return ResponseEntity.ok(articleService.getList(page, 10));
 	}
 
+	@Operation(summary = "게시물 단건조회", description = "pathVariable id값으로 단건 조회")
 	@GetMapping("/{id}")
 	public ResponseEntity<ArticleResponseDto> getArticle(@PathVariable Long id) {
 		return ResponseEntity.ok(articleService.get(id));
 	}
 
+	@Operation(summary = "게시물 작성", description = "(Login Required) 제목과 내용으로 글 작성")
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("")
 	public ResponseEntity write(@RequestBody @Valid ArticleRequestDto articleRequestDto, BindingResult brs, Principal principal) {

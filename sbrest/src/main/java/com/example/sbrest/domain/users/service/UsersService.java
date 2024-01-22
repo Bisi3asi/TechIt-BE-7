@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.sbrest.domain.users.dto.UsersJoinRequestDto;
+import com.example.sbrest.domain.users.dto.UsersJoinResponseDto;
 import com.example.sbrest.domain.users.dto.UsersLoginRequestDto;
 import com.example.sbrest.domain.users.dto.UsersLoginResponseDto;
 import com.example.sbrest.domain.users.entity.Role;
@@ -91,7 +92,7 @@ public class UsersService {
 	}
 
 	@Transactional
-	public ResponseEntity<String> create(UsersJoinRequestDto usersJoinRequestDto) {
+	public ResponseEntity<UsersJoinResponseDto> create(UsersJoinRequestDto usersJoinRequestDto) {
 		if (usersRepository.findByUsername(usersJoinRequestDto.getUsername()).isPresent()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ERROR : 회원가입 실패, 중복된 아이디가 있습니다.");
 		}
@@ -104,7 +105,7 @@ public class UsersService {
 			.build();
 		usersRepository.save(users);
 
-		return ResponseEntity.ok("회원가입 성공!");
+		return ResponseEntity.ok(new UsersJoinResponseDto(users.getNickname(), "회원가입 성공"));
 	}
 
 	@Transactional

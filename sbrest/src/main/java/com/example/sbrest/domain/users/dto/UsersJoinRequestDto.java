@@ -14,22 +14,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @Schema(description = "유저 회원가입 요청 DTO")
 public class UsersJoinRequestDto {
-	@Schema(description = "사용자 ID")
+	@Schema(description = "사용자 ID", defaultValue = "exampleId")
 	@NotBlank(message = "ID를 입력해주세요.")
 	@Size(min = 8, max = 20, message = "ID를 8 ~ 20자 이내로 입력해주세요.")
 	private String username;
 
-	@Schema(description = "사용자 이름")
+	@Schema(description = "사용자 이름", defaultValue = "John Doe")
 	@NotBlank(message = "사용자 이름을 입력해주세요.")
 	@Size(min = 2, max = 20, message = "사용자 이름을 2 ~ 20자 이내로 입력해주세요.")
 	private String nickname;
 
-	@Schema(description = "사용자 비밀번호")
+	@Schema(description = "사용자 비밀번호", defaultValue = "12345678")
 	@NotBlank(message = "비밀번호를 입력해주세요.")
 	@Size(min = 8, max = 20, message = "비밀번호를 8 ~ 20자 이내로 입력해주세요.")
 	private String password;
 
-	@Schema(description = "사용자 비밀번호 확인")
+	@Schema(description = "사용자 비밀번호 확인", defaultValue = "12345678")
 	@NotBlank(message = "비밀번호 확인을 입력해주세요.")
 	@Size(min = 8, max = 20, message = "비밀번호 확인을 8 ~ 20자 이내로 입력해주세요.")
 	private String passwordConfirm;

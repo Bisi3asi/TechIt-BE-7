@@ -14,12 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Schema(description = "게시글 작성 시 요청 DTO")
 public class ArticleRequestDto {
-	@Schema(description = "게시글 제목")
+	@Schema(description = "게시글 제목", defaultValue = "hello title")
 	@NotBlank(message = "제목은 공백일 수 없습니다.")
 	@Size(max = 50, message = "제목은 50자를 초과할 수 없습니다.")
 	private String title;
 
-	@Schema(description = "게시글 내용")
+	@Schema(description = "게시글 내용", defaultValue = "hello content")
 	@NotBlank(message = "내용은 공백일 수 없습니다.")
 	@Size(max = 1000, message = "내용은 1000자를 초과할 수 없습니다.")
 	private String content;
