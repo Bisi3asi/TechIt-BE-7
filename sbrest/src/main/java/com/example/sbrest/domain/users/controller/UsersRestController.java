@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sbrest.domain.users.dto.UsersJoinRequestDto;
+import com.example.sbrest.domain.users.dto.UsersJoinResponseDto;
 import com.example.sbrest.domain.users.dto.UsersLoginRequestDto;
 import com.example.sbrest.domain.users.dto.UsersLoginResponseDto;
 import com.example.sbrest.domain.users.dto.UsersLogoutResponseDto;
@@ -27,6 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+// todo : validation 관련 전역 exception 처리
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/users", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -38,21 +40,20 @@ public class UsersRestController {
 	@Operation(summary = "로그인 상태 조회", description = "(Login Required) 로그인된 사용자 ID를 리턴합니다.")
 	@GetMapping("")
 	@PreAuthorize("isAuthenticated()")
-	public ResponseEntity showIsLogined(Principal principal){
+	public ResponseEntity<UsersLoginResponseDto> showIsLogined(Principal principal){
 		if (principal == null){
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비로그인");
+			return ResponseEntity.badRequest().body(new UsersLoginResponseDto(null, "로그인되어 있지 않습니다."));
 		}
-		return ResponseEntity.ok(principal.getName());
+		Users users = usersService.findByUsername(principal.getName());
+
+		return ResponseEntity.ok(new UsersLoginResponseDto(users.getNickname(), users.getAuthorities().toString()));
 	}
 
 	@Operation(summary = "회원가입", description = "회원가입을 합니다.")
 	@PostMapping("/join")
-	public ResponseEntity join(@RequestBody UsersJoinRequestDto usersJoinRequestDto, BindingResult brs) {
+	public ResponseEntity<UsersJoinResponseDto> join(@RequestBody @Valid UsersJoinRequestDto usersJoinRequestDto) {
 		if (!usersJoinRequestDto.getPassword().contentEquals(usersJoinRequestDto.getPasswordConfirm())) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호, 비밀번호 확인 불일치");
-		}
-		if (brs.hasErrors()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(brs.getAllErrors());
+			return ResponseEntity.badRequest().body(new UsersJoinResponseDto(null, "패스워드가 일치하지 않습니다"));
 		}
 		return usersService.create(usersJoinRequestDto);
 	}
@@ -60,10 +61,7 @@ public class UsersRestController {
 	@Operation(summary = "로그인", description = "로그인을 합니다.")
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/login")
-	public ResponseEntity login(@RequestBody @Valid UsersLoginRequestDto usersLoginRequestDto, BindingResult brs) {
-		if (brs.hasErrors()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(brs.getAllErrors());
-		}
+	public ResponseEntity<UsersLoginResponseDto> login(@RequestBody @Valid UsersLoginRequestDto usersLoginRequestDto) {
 		UsersLoginResponseDto usersLoginResponseDto = usersService.checkUsernameAndPassword(usersLoginRequestDto);
 
 		Users users = usersService.findByUsername(usersLoginRequestDto.getUsername());
@@ -75,10 +73,7 @@ public class UsersRestController {
 	@Operation(summary = "로그아웃", description = "(Login Required) 로그인을 합니다.")
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/logout")
-	public ResponseEntity logout(Principal principal) {
-		if (principal == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("로그인된 상태가 아닙니다");
-		}
+	public ResponseEntity<UsersLogoutResponseDto> logout(Principal principal) {
 		Users users = usersService.findByUsername(principal.getName());
 
 		if (rq.getAccessTokenFromCookie(null) != null) {

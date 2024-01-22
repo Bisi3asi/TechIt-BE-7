@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+// todo : validation 관련 전역 exception 처리
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/articles", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -50,10 +51,7 @@ public class ArticleRestController {
 	@Operation(summary = "게시물 작성", description = "(Login Required) 제목과 내용으로 글 작성")
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("")
-	public ResponseEntity write(@RequestBody @Valid ArticleRequestDto articleRequestDto, BindingResult brs, Principal principal) {
-		if (brs.hasErrors()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(brs.getAllErrors());
-		}
+	public ResponseEntity<ArticleResponseDto> write(@RequestBody @Valid ArticleRequestDto articleRequestDto, Principal principal) {
 		return ResponseEntity.ok(
 			articleService.create(articleRequestDto, usersService.findByUsername(principal.getName()))
 		);
