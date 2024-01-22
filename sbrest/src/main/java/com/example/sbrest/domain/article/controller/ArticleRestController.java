@@ -20,9 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.sbrest.domain.article.dto.ArticleRequestDto;
 import com.example.sbrest.domain.article.dto.ArticleResponseDto;
 import com.example.sbrest.domain.article.service.ArticleService;
+import com.example.sbrest.domain.users.dto.UsersLoginResponseDto;
 import com.example.sbrest.domain.users.service.UsersService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +46,11 @@ public class ArticleRestController {
 		return ResponseEntity.ok(articleService.getList(page, 10));
 	}
 
-	@Operation(summary = "게시물 단건조회", description = "pathVariable id값으로 단건 조회")
+	@Operation(summary = "게시물 단건조회", description = "pathVariable id값으로 단건 조회", responses = {
+		@ApiResponse(responseCode = "200", description = "게시글 조회 성공",
+			content = @Content(schema = @Schema(implementation = ArticleResponseDto.class))
+		)
+	})
 	@GetMapping("/{id}")
 	public ResponseEntity<ArticleResponseDto> getArticle(@PathVariable Long id) {
 		return ResponseEntity.ok(articleService.get(id));
