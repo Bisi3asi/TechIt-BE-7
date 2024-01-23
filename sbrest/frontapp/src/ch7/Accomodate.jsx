@@ -12,7 +12,7 @@ function Accommodate(props) {
         console.log("======================");
         console.log("useEffect() is called.");
         console.log(`isFull: ${isFull}`);
-    }); // 별도 의존성 배열이 없기 때문에 매번 마운트, 언마운트마다 실행
+    }); // 별도 의존성 배열이 없기 때문에 컴포넌트가 업데이트될 때(매번 마운트, 언마운트)마다 실행
 
     useEffect(() => {
         setIsFull(count >= MAX_CAPACITY);
