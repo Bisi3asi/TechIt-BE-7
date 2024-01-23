@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Library from "./ch3/Library";
 import Clock from "./ch4/clock";
 import CommentList from "./ch5/CommentList";
+import Accommodate from "./ch7/Accomodate";
 
 function LearningPage() {
   return (
@@ -28,6 +29,10 @@ function LearningPage() {
         <li className="mb-3">
           4장 : state의 이해
           {/* <NotificationList /> */}
+        </li>
+        <li className="mb-3">
+          5장 : 훅의 이해 (useState, useEffect)
+          <Accommodate></Accommodate>
         </li>
       </ul>
     </div>
