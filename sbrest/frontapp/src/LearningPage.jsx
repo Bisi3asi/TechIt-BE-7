@@ -4,6 +4,7 @@ import Library from "./ch3/Library";
 import Clock from "./ch4/clock";
 import CommentList from "./ch5/CommentList";
 import Accommodate from "./ch7/Accomodate";
+import DarkOrLight from "./ch14/DarkOrLight";
 
 function LearningPage() {
   return (
@@ -33,6 +34,10 @@ function LearningPage() {
         <li className="mb-3">
           5장 : 훅의 이해 (useState, useEffect)
           <Accommodate></Accommodate>
+        </li>
+        <li className="mb-3">
+          14장 : Context API
+          <DarkOrLight></DarkOrLight>
         </li>
       </ul>
     </div>
