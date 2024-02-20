@@ -1,0 +1,30 @@
+server:
+  port: 9000
+spring:
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:db_batch;Mode=MySQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          default_batch_fetch_size: 1000
+          format_sql: true
+          highlight_sql: true
+          use_sql_comments: true
+logging:
+  level:
+    com.example.practicesbb: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.orm.jdbc.extract: TRACE
+    org.springframework.transaction.interceptor: TRACE
