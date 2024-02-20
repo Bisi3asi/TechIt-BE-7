@@ -14,13 +14,10 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          default_batch_fetch_size: 1000
-          format_sql: true
-          highlight_sql: true
-          use_sql_comments: true
+        default_batch_fetch_size: 1000
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
   batch:
     jdbc:
       initialize-schema: always
