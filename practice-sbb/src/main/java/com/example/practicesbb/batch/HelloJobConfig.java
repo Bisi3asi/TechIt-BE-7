@@ -20,7 +20,6 @@ public class HelloJobConfig {
 	public Job helloJob(JobRepository jobRepository, Step simpleStep1) {
 		return new JobBuilder("helloJob", jobRepository)
 			.start(simpleStep1)
-			.incrementer(new RunIdIncrementer())
 			.build();
 	}
 
