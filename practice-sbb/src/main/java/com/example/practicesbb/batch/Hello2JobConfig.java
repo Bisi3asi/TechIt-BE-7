@@ -1,10 +1,10 @@
 package com.example.practicesbb.batch;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -12,6 +12,8 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
@@ -24,6 +26,7 @@ public class Hello2JobConfig {
 			.build();
 	}
 
+	@JobScope
 	@Bean
 	public Step hello2Step1(JobRepository jobRepository, Tasklet hello2Step1Tasklet1, PlatformTransactionManager platformTransactionManager) {
 		return new StepBuilder("hello2Step1Tasklet1", jobRepository)
@@ -31,6 +34,7 @@ public class Hello2JobConfig {
 			.build();
 	}
 
+	@StepScope
 	@Bean
 	public Tasklet hello2Step1Tasklet1() {
 		return ((contribution, chunkContext) -> {
@@ -39,6 +43,7 @@ public class Hello2JobConfig {
 		});
 	}
 
+	@JobScope
 	@Bean
 	public Step hello2Step2(JobRepository jobRepository, Tasklet hello2Step2Tasklet1, PlatformTransactionManager platformTransactionManager) {
 		return new StepBuilder("hello2Step2Tasklet1", jobRepository)
@@ -46,6 +51,7 @@ public class Hello2JobConfig {
 			.build();
 	}
 
+	@StepScope
 	@Bean
 	public Tasklet hello2Step2Tasklet1() {
 		return ((contribution, chunkContext) -> {
