@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 public class BatchController {
 	private final BatchService batchService;
 
-	@GetMapping("/simple")
+	@GetMapping("/hello")
 	@ResponseBody
-	public String runSimpleJob() {
-		batchService.runSimpleJob();
+	public String runHelloJob() {
+		batchService.runHelloJob();
 
 		return "runSimpleJob OK";
 	}

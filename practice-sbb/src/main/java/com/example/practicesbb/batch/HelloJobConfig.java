@@ -17,9 +17,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class HelloJobConfig {
 	@Bean
-	public Job helloJob(JobRepository jobRepository, Step simpleStep1) {
+	public Job helloJob(JobRepository jobRepository, Step helloStep1) {
 		return new JobBuilder("helloJob", jobRepository)
-			.start(simpleStep1)
+			.start(helloStep1)
 			.build();
 	}
 
@@ -33,8 +33,7 @@ public class HelloJobConfig {
 	@Bean
 	public Tasklet helloStep1Tasklet1() {
 		return ((contribution, chunkContext) -> {
-			log.info("Hello World");
-			System.out.println("Hello World");
+			log.info("Hello World 1/1");
 			return RepeatStatus.FINISHED;
 		});
 	}
