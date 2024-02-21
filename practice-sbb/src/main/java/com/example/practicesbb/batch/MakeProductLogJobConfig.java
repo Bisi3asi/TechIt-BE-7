@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 public class MakeProductLogJobConfig {
+	private final int CHUNK_SIZE = 50;
 	private final ProductRepository productRepository;
 	private final ProductLogRepository productLogRepository;
 
@@ -53,7 +54,7 @@ public class MakeProductLogJobConfig {
         ItemWriter<ProductLog> step1Writer,
 		PlatformTransactionManager platformTransactionManager) {
 		return new StepBuilder("makeProductLogStep1Tasklet1", jobRepository)
-			.<Product, ProductLog>chunk(10, platformTransactionManager)
+			.<Product, ProductLog>chunk(CHUNK_SIZE, platformTransactionManager)
 			.reader(step1Reader)
 			.processor(step1Processor)
 			.writer(step1Writer)
@@ -67,6 +68,7 @@ public class MakeProductLogJobConfig {
 			.name("step1Reader")
 			.repository(productRepository)
 			.methodName("findAll")
+			.pageSize(CHUNK_SIZE)
 			.sorts(Collections.singletonMap("id", Sort.Direction.ASC))
 			.build();
 	}
