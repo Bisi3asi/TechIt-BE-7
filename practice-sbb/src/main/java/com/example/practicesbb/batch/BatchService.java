@@ -16,7 +16,7 @@ public class BatchService {
 	public void runSimpleJob() {
 		try {
 			JobParameters jobParameters = new JobParametersBuilder()
-				.addLong("id", System.currentTimeMillis())
+				// .addLong("id", System.currentTimeMillis())
 				.toJobParameters();
 			jobLauncher.run(simpleJob, jobParameters);
 		} catch (Exception e) {
