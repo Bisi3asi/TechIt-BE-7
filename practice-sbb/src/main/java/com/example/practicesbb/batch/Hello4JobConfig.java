@@ -53,6 +53,7 @@ public class Hello4JobConfig {
 	}
 
 	// 원본 데이터 읽기
+	// 실패를 대비해서 배치가 완료되었다는 특정 칼럼을 만들던지 해서 지능적으로 실패한 부분만 재개가능하도록 짜야한다.
 	@StepScope
 	@Component
 	public static class hello4Step1Reader implements ItemReader<Integer> {
