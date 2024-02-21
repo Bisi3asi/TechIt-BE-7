@@ -1,5 +1,6 @@
 package com.example.practicesbb.batch;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
@@ -25,6 +27,7 @@ import com.example.practicesbb.domain.product.Product;
 import com.example.practicesbb.domain.product.ProductLog;
 import com.example.practicesbb.domain.product.ProductLogRepository;
 import com.example.practicesbb.domain.product.ProductRepository;
+import com.example.practicesbb.standard.Ut;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 public class MakeProductLogJobConfig {
-	private final int CHUNK_SIZE = 50;
+	private final int CHUNK_SIZE = 10;
 	private final ProductRepository productRepository;
 	private final ProductLogRepository productLogRepository;
 
@@ -63,12 +66,19 @@ public class MakeProductLogJobConfig {
 
 	@StepScope
 	@Bean
-	public RepositoryItemReader<Product> step1Reader() {
+	public RepositoryItemReader<Product> step1Reader(
+		@Value("#{jobParameters['startDate']}") String _startDate,
+		@Value("#{jobParameters['endDate']}") String _endDate
+		) {
+		LocalDateTime startDate = Ut.Date.parse(_startDate);
+		LocalDateTime endDate = Ut.Date.parse(_endDate);
+
 		return new RepositoryItemReaderBuilder<Product>()
 			.name("step1Reader")
 			.repository(productRepository)
-			.methodName("findAll")
+			.methodName("findByCreatedDateBetween")
 			.pageSize(CHUNK_SIZE)
+			.arguments(Arrays.asList(startDate, endDate))
 			.sorts(Collections.singletonMap("id", Sort.Direction.ASC))
 			.build();
 	}
