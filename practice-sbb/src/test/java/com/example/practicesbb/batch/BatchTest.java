@@ -50,6 +50,6 @@ public class BatchTest {
 	@DisplayName("t5")
 	@Test
 	public void t5() throws Exception {
-		hello4JobLauncherTestUtils.launchJob();
+		hello5JobLauncherTestUtils.launchJob();
 	}
 }
