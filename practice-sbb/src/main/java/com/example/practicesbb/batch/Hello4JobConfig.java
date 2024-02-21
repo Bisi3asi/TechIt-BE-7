@@ -22,6 +22,7 @@ import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,6 +34,16 @@ public class Hello4JobConfig {
 			.start(hello4Step1)
 			.incrementer(new RunIdIncrementer())
 			.build();
+	}
+
+	@JobScope
+	@Component
+	public static class Hello4Step1Counter {
+		private int count = 0;
+
+		public void printCount(String where) {
+			System.out.println(" count = " + ++count + "in " + where);
+		}
 	}
 
 	@JobScope
@@ -56,9 +67,13 @@ public class Hello4JobConfig {
 	// 실패를 대비해서 배치가 완료되었다는 특정 칼럼을 만들던지 해서 지능적으로 실패한 부분만 재개가능하도록 짜야한다.
 	@StepScope
 	@Component
+	@RequiredArgsConstructor
 	public static class hello4Step1Reader implements ItemReader<Integer> {
+		private final Hello4Step1Counter hello4Step1Counter;
 		@Override
 		public Integer read() {
+			hello4Step1Counter.printCount("Reader");
+
 			int no = (int)(Math.random() * 500); // return null을 하지 않으면 영원히 읽는다.
 			if (no == 100)
 				return null; // null 값을 통해 해당 데이터가 끝났음을 분기
@@ -69,10 +84,14 @@ public class Hello4JobConfig {
 	// 원본 데이터 가공
 	@StepScope
 	@Component
+	@RequiredArgsConstructor
 	public static class hello4Step1Processor implements ItemProcessor<Integer, String> {
+		private final Hello4Step1Counter hello4Step1Counter;
 
 		@Override
 		public String process(Integer item) throws Exception {
+			hello4Step1Counter.printCount("Processor");
+
 			return "no. " + item;
 		}
 	}
@@ -80,13 +99,16 @@ public class Hello4JobConfig {
 	// 가공된 데이터 쓰기
 	@StepScope
 	@Component
+	@RequiredArgsConstructor
 	public static class hello4Step1Writer implements ItemWriter<String> {
+		private final Hello4Step1Counter hello4Step1Counter;
 
 		@Override
 		public void write(Chunk<? extends String> chunk) throws Exception {
+
 			List<String> items = (List<String>)chunk.getItems();
 			for (String item : items) {
-				log.info("item = " + item);
+				hello4Step1Counter.printCount("Writer, item = " + item);
 			}
 		}
 	}
