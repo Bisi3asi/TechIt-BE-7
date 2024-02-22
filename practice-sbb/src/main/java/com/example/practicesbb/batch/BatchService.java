@@ -27,10 +27,10 @@ public class BatchService {
 		}
 	}
 
-	public void runMakeProductLogJob() {
+	public void runMakeProductLogJob(LocalDateTime startDate_, LocalDateTime endDate_) {
 		try {
-			String startDate = LocalDateTime.now().minusDays(1).toString().substring(0, 10) + " 00:00:00.000000";
-			String endDate = LocalDateTime.now().minusDays(1).toString().substring(0, 10) + " 23:59:59.999999";
+			String startDate = startDate_.toString().substring(0, 10) + " 00:00:00.000000";
+			String endDate = endDate_.toString().substring(0, 10) + " 23:59:59.999999";
 
 			JobParameters jobParameters = new JobParametersBuilder()
 				.addString("startDate", startDate)

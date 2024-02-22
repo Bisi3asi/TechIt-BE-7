@@ -1,9 +1,4 @@
-server:
-  port: 9000
 spring:
-  threads:
-    virtual:
-      enabled: false
   datasource:
     url: jdbc:h2:mem:db_test;Mode=MySQL
     username: sa
