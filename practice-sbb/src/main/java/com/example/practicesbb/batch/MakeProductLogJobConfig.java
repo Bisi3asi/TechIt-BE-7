@@ -48,6 +48,7 @@ public class MakeProductLogJobConfig {
 			.build();
 	}
 
+	// 스텝 단위로 실패 시 재실행된다.
 	@JobScope
 	@Bean
 	public Step makeProductLogStep1(
@@ -56,7 +57,7 @@ public class MakeProductLogJobConfig {
 		ItemProcessor<Product, ProductLog> step1Processor,
         ItemWriter<ProductLog> step1Writer,
 		PlatformTransactionManager platformTransactionManager) {
-		return new StepBuilder("makeProductLogStep1Tasklet1", jobRepository)
+		return new StepBuilder("makeProductLogStep1", jobRepository)
 			.<Product, ProductLog>chunk(CHUNK_SIZE, platformTransactionManager)
 			.reader(step1Reader)
 			.processor(step1Processor)
@@ -95,6 +96,12 @@ public class MakeProductLogJobConfig {
 	@StepScope
 	@Bean
 	public ItemWriter<ProductLog> step1Writer() {
-		return items -> items.forEach(productLogRepository::save);
+		return items ->  items.forEach(
+			item -> {
+				if (item.getProduct().getId() == 50) throw new RuntimeException("100번은 실패");
+
+				if (!productLogRepository.existsByProduct(item.getProduct()))
+					productLogRepository.save(item);
+			});
 	}
 }

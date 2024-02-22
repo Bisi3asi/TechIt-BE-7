@@ -20,4 +20,12 @@ public class BatchController {
 
 		return "runSimpleJob OK";
 	}
+
+	@GetMapping("/job")
+	@ResponseBody
+	public String runMakeProductLogJob() {
+		batchService.runMakeProductLogJob();
+
+		return "runMakeProductLogJob OK";
+	}
 }
